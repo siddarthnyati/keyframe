@@ -1,61 +1,70 @@
 @import "tailwindcss";
 
 :root {
-  --ink: #0f1726;
-  --ink-2: #141d30;
-  --surface: #182238;
-  --surface-2: #1f2b45;
-  --line: #2a3550;
-  --line-2: #364364;
-  --text: #eef1f7;
-  --muted: #8e99b3;
-  --dim: #5c6785;
-  --amber: #e8b04b;
-  --amber-ink: #2b1f05;
-  --pass: #5fd39a;
-  --fail: #f26d6d;
-  --warn: #e8b04b;
+  --bg-app: #0f0f0f;
+  --bg-panel: #1d1d1d;
+  --bg-2: #262626;
+  --bg-hover: #2e2e2e;
+  --bg-sel: #333333;
+  --player: #000000;
+  --border: rgba(255, 255, 255, 0.08);
+  --border-strong: rgba(255, 255, 255, 0.16);
+  --text-1: #e9ecf2;
+  --text-2: #a3a8b3;
+  --text-3: #767d88;
+  --accent: #4069fd;
+  --ok: #2dbf6f;
+  --warn: #f5a524;
+  --err: #f04f4f;
+  --skim: #ff3b30;
   --prime-blue: #2d75fa;
-  --font-ui: "Inter Tight", system-ui, sans-serif;
+  --font-ui: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   --font-art: "Instrument Serif", "Hiragino Mincho ProN", "Yu Mincho", Georgia, serif;
 }
 
 @theme inline {
-  --color-ink: var(--ink);
-  --color-ink-2: var(--ink-2);
-  --color-surface: var(--surface);
-  --color-surface-2: var(--surface-2);
-  --color-line: var(--line);
-  --color-line-2: var(--line-2);
-  --color-text: var(--text);
-  --color-muted: var(--muted);
-  --color-dim: var(--dim);
-  --color-amber: var(--amber);
-  --color-amber-ink: var(--amber-ink);
-  --color-pass: var(--pass);
-  --color-fail: var(--fail);
+  --color-app: var(--bg-app);
+  --color-panel: var(--bg-panel);
+  --color-bg2: var(--bg-2);
+  --color-hover: var(--bg-hover);
+  --color-sel: var(--bg-sel);
+  --color-player: var(--player);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-t1: var(--text-1);
+  --color-t2: var(--text-2);
+  --color-t3: var(--text-3);
+  --color-accent: var(--accent);
+  --color-ok: var(--ok);
   --color-warn: var(--warn);
+  --color-err: var(--err);
+  --color-skim: var(--skim);
   --color-prime: var(--prime-blue);
   --font-ui: var(--font-ui);
+  --font-mono: var(--font-mono);
   --font-art: var(--font-art);
 }
 
+@layer base {
 html,
 body {
-  background: var(--ink);
-  color: var(--text);
+  height: 100%;
+  background: var(--bg-app);
+  color: var(--text-1);
   font-family: var(--font-ui);
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: 12.5px;
+  line-height: 1.4;
+  overscroll-behavior: none;
 }
 
 * {
-  border-color: var(--line);
+  border-color: var(--border);
 }
 
 ::selection {
-  background: var(--amber);
-  color: var(--amber-ink);
+  background: var(--accent);
+  color: #fff;
 }
 
 button,
@@ -67,42 +76,56 @@ select {
 
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
 [tabindex]:focus-visible {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
+  outline: 2px solid var(--accent);
+  outline-offset: 1px;
 }
 
 input[type="range"] {
-  accent-color: var(--amber);
+  accent-color: var(--text-1);
+}
+input[type="checkbox"] {
+  accent-color: var(--accent);
+}
 }
 
-.frame-tile {
-  transition: transform 160ms ease, opacity 320ms ease;
+.mono {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
 }
-.frame-tile[data-new="true"] {
-  animation: tile-in 360ms ease both;
+
+.label {
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-3);
 }
-@keyframes tile-in {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--bg-sel) transparent;
+}
+.scroll-thin::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+.scroll-thin::-webkit-scrollbar-thumb {
+  background: var(--bg-sel);
+  border-radius: 4px;
 }
 
 .bar-fill {
   transition: width 420ms cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.scanline {
-  background: linear-gradient(90deg, transparent, rgba(232, 176, 75, 0.35), transparent);
+.shimmer {
+  background: linear-gradient(90deg, var(--bg-2) 25%, var(--bg-hover) 50%, var(--bg-2) 75%);
   background-size: 200% 100%;
-  animation: scan 1.4s linear infinite;
+  animation: shimmer 1.2s linear infinite;
 }
-@keyframes scan {
+@keyframes shimmer {
   from {
     background-position: 200% 0;
   }
@@ -111,10 +134,24 @@ input[type="range"] {
   }
 }
 
+.sheet-in {
+  animation: sheet 180ms ease-out both;
+}
+@keyframes sheet {
+  from {
+    transform: translateX(16px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
-  .frame-tile,
   .bar-fill,
-  .scanline {
+  .shimmer,
+  .sheet-in {
     animation: none;
     transition: none;
   }

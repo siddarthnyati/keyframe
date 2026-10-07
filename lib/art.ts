@@ -22,8 +22,8 @@ export function ensureFonts() {
   if (!fontsReady) {
     fontsReady = Promise.all([
       document.fonts.load('400 40px "Instrument Serif"'),
-      document.fonts.load('600 20px "Inter Tight"'),
-      document.fonts.load('500 20px "Inter Tight"'),
+      document.fonts.load('600 20px "Inter"'),
+      document.fonts.load('500 20px "Inter"'),
     ]).then(() => undefined);
   }
   return fontsReady;
@@ -85,7 +85,7 @@ export function renderVariant(input: RenderInput): RenderOutput {
     ctx.fillRect(0, 0, w, h);
 
     // Badge
-    ctx.font = `600 ${badgePx}px "Inter Tight"`;
+    ctx.font = `600 ${badgePx}px "Inter"`;
     const badgeTextW = ctx.measureText(BADGE_TEXT).width;
     const bh = Math.round(badgePx * 1.9);
     const bw = Math.round(badgeTextW + badgePx * 1.6);
@@ -99,7 +99,7 @@ export function renderVariant(input: RenderInput): RenderOutput {
 
     // Tagline
     ctx.textBaseline = "alphabetic";
-    ctx.font = `400 ${tagPx}px "Inter Tight"`;
+    ctx.font = `400 ${tagPx}px "Inter"`;
     ctx.fillStyle = "rgba(238,241,247,0.92)";
     const tagY = by - Math.round(tagPx * 0.9);
     const tagW = ctx.measureText(locale.tagline).width;
