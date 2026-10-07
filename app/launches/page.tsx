@@ -2,6 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
+import Poster from "@/components/Poster";
 import { PageIntro } from "@/components/Shell";
 import { Ring, StatusPill, STATUS_TONE } from "@/components/status";
 import { Panel, PanelHeader, Row, Section, Select, StatusDot } from "@/components/ui";
@@ -17,7 +18,7 @@ export default function LaunchesPage() {
 
 function Launches() {
   const params = useSearchParams();
-  const initial = params.get("title") && titleById[params.get("title")!] ? params.get("title")! : "sintel";
+  const initial = params.get("title") && titleById[params.get("title")!] ? params.get("title")! : "terminal";
   const [titleId, setTitleId] = useState(initial);
   const t = titleById[titleId];
   const cells = cellsFor(titleId);
@@ -44,13 +45,13 @@ function Launches() {
           </label>
         }
       >
-        One title, every market, every deliverable. A cell is a file a vendor or agency owes the launch: who owns it, when it is due, and its state. The spec checks run on
-        each file as it arrives, so a rejection shows up here on the day, not at upload. This is the sheet producers keep by hand today.
+        Every market, every deliverable, who owes it and when. Spec checks run as files arrive, so a rejection shows here on the day, not at upload.
       </PageIntro>
 
-      <div className="flex min-h-0 flex-1">
+      <div className="flex min-h-0 flex-1 border-t border-line">
         <div className="scroll-thin min-w-0 flex-1 overflow-auto">
-          <div className="flex items-center gap-4 border-b border-line px-6 py-3">
+          <div className="flex items-center gap-4 border-b border-line px-8 py-3">
+            <Poster t={t} w={44} rounded={4} />
             <Ring pct={r.pct} size={40} />
             <div>
               <p className="text-[14px] font-medium">
@@ -72,7 +73,7 @@ function Launches() {
           <table className="w-full border-separate border-spacing-0 text-[12.5px]">
             <thead className="sticky top-0 z-10 bg-app">
               <tr>
-                <th className="w-[200px] px-6 py-2 text-left text-[11px] font-medium text-t3">Market</th>
+                <th className="w-[200px] px-8 py-2 text-left text-[11px] font-medium text-t3">Market</th>
                 {DELIVERABLES.map((d) => (
                   <th key={d.id} className="py-2 pr-3 text-left">
                     <span className="block text-[12px] font-medium text-t1">{d.label}</span>
@@ -86,7 +87,7 @@ function Launches() {
                 const m = marketByCode[code];
                 return (
                   <tr key={code}>
-                    <td className="border-t border-line px-6 py-2 align-top">
+                    <td className="border-t border-line px-8 py-2 align-top">
                       <span className="block text-[13px]">{m.name}</span>
                       <span className="mono block text-[11px] text-t3">{m.locale}</span>
                     </td>

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { Sparkle } from "lucide-react";
+import Poster from "@/components/Poster";
 import { PageIntro } from "@/components/Shell";
 import { Button, Panel, PanelHeader, Section, Segmented } from "@/components/ui";
 import { DELIVERABLES, UPDATE_SEED, cellsFor, fmtDate, marketByCode, readiness, titleById } from "@/lib/data";
@@ -14,7 +15,7 @@ export default function Updates() {
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
-  const t = titleById.sintel;
+  const t = titleById.terminal;
   const r = readiness(t.id);
 
   const regenerate = async () => {
@@ -53,13 +54,13 @@ export default function Updates() {
           />
         }
       >
-        The two emails a producer writes most: the weekly status to stakeholders and the chase to a late vendor. Both are drafted from the launch board, in the producer&rsquo;s
-        voice, with the real dates and owners already in. The producer edits and sends. Nothing sends itself.
+        The two emails a producer writes most, drafted from the launch board with the real dates and owners in. The producer edits and sends. Nothing sends itself.
       </PageIntro>
-      <div className="flex min-h-0 flex-1">
-        <div className="flex min-w-0 flex-1 flex-col p-6">
+      <div className="flex min-h-0 flex-1 border-t border-line">
+        <div className="flex min-w-0 flex-1 flex-col p-8">
           <div className="flex items-center gap-3">
-            <p className="text-[13.5px] font-medium">{kind === "status" ? `${t.name} status, week of ${fmtDate("2026-10-07")}` : "Nordlicht Dub, German trailer"}</p>
+            <Poster t={t} w={28} rounded={3} />
+            <p className="text-[13.5px] font-medium">{kind === "status" ? `${t.name}, status for the week of ${fmtDate("2026-10-07")}` : "Nordlicht Dub, German trailer"}</p>
             <span className="ml-auto" />
             <Button onClick={regenerate} disabled={busy}>
               <Sparkle size={13} /> {busy ? "Drafting" : "Draft again from the board"}

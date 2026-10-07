@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import Poster from "@/components/Poster";
 import { PageIntro } from "@/components/Shell";
 import { StatusPill } from "@/components/status";
 import { Panel, PanelHeader, Section, Segmented } from "@/components/ui";
@@ -49,11 +50,10 @@ export default function Markets() {
           />
         }
       >
-        Where campaigns are live, launching, or stuck, by market. Red means something in that market is blocking a launch. Click a market for the titles running there and what
-        each one still owes. This is the view a regional lead asks for in every weekly, and today it is assembled by hand from several trackers.
+        Where campaigns are live, launching or stuck. Red means something in that market is blocking a launch. Click a market for what each title still owes there.
       </PageIntro>
-      <div className="flex min-h-0 flex-1">
-        <div className="scroll-thin min-w-0 flex-1 overflow-y-auto p-6">
+      <div className="flex min-h-0 flex-1 border-t border-line">
+        <div className="scroll-thin min-w-0 flex-1 overflow-y-auto p-8">
           <div className="rounded-[8px] border border-line bg-panel p-2">
             <WorldMap tones={tones} selected={sel} onSelect={setSel} />
           </div>
@@ -85,6 +85,7 @@ export default function Markets() {
                   <Section
                     key={t.id}
                     title={t.name}
+                    icon={<Poster t={t} w={22} rounded={2} />}
                     right={
                       <span className="text-[11px] text-t3">
                         {t.stage === "live" ? `live since ${fmtDate(t.launch)}` : `${fmtDate(t.launch)}, ${daysToLaunch(t)}d`}

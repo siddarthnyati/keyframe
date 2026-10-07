@@ -117,11 +117,14 @@ export function PanelHeader({ title, right }: { title: string; right?: ReactNode
   );
 }
 
-export function Section({ title, children, right }: { title: string; children: ReactNode; right?: ReactNode }) {
+export function Section({ title, children, right, icon }: { title: string; children: ReactNode; right?: ReactNode; icon?: ReactNode }) {
   return (
     <section className="border-b border-line px-3 py-3">
-      <div className="mb-2 flex items-center justify-between">
-        <span className="label">{title}</span>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <span className="flex items-center gap-2">
+          {icon}
+          <span className="label">{title}</span>
+        </span>
         {right}
       </div>
       {children}

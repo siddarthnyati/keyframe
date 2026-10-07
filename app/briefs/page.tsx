@@ -1,13 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { TrendingUp } from "lucide-react";
+import { ExternalLink } from "lucide-react";
+import Poster from "@/components/Poster";
 import { PageIntro } from "@/components/Shell";
-import { Chip, Panel, PanelHeader, Row, Section } from "@/components/ui";
+import { Chip, Panel, PanelHeader, Section } from "@/components/ui";
 import { BRIEFS, SIGNALS, fmtDate, titleById } from "@/lib/data";
 
 export default function Briefs() {
-  const [id, setId] = useState("sintel");
+  const [id, setId] = useState(BRIEFS[0].title);
   const b = BRIEFS.find((x) => x.title === id)!;
   const t = titleById[id];
   const s = SIGNALS[id];
@@ -15,12 +16,10 @@ export default function Briefs() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <PageIntro title="Briefs">
-        The creative brief is the one document every vendor and agency works from. On the right, what fans are saying about the title this week, so the brief is written from
-        evidence and not from the last meeting. The signals are illustrative here; in production they come from the social listening feed.
+        The brief every vendor and agency works from, beside what is being said about the title this week, so it is written from evidence.
       </PageIntro>
-      <div className="flex min-h-0 flex-1">
-        <Panel side="left" width={240}>
-          <PanelHeader title="Titles" />
+      <div className="flex min-h-0 flex-1 border-t border-line">
+        <Panel side="left" width={236}>
           <ul className="py-1">
             {BRIEFS.map((x) => {
               const tt = titleById[x.title];
@@ -28,11 +27,11 @@ export default function Briefs() {
               return (
                 <li key={x.title}>
                   <button type="button" onClick={() => setId(x.title)} className={`flex w-full items-center gap-2.5 px-3 py-2 text-left ${active ? "bg-sel" : "hover:bg-hover"}`}>
-                    <span className="aspect-[2/3] w-6 shrink-0 rounded-[2px]" style={{ background: `linear-gradient(160deg, hsl(${tt.hue} 45% 38%), hsl(${tt.hue} 40% 14%))` }} />
+                    <Poster t={tt} w={30} rounded={3} />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[12.5px]">{tt.name}</span>
                       <span className="block text-[11px] text-t3">
-                        {x.status}, due {fmtDate(x.due)}
+                        {x.status}, {fmtDate(tt.launch)}
                       </span>
                     </span>
                   </button>
@@ -42,27 +41,34 @@ export default function Briefs() {
           </ul>
         </Panel>
 
-        <div className="scroll-thin min-w-0 flex-1 overflow-y-auto px-6 py-5">
-          <div className="flex items-baseline justify-between">
-            <h2 className="text-[16px] font-semibold">{t.name} launch brief</h2>
-            <span className="text-[12px] text-t3">
-              {b.status}. {b.owner}. Due {fmtDate(b.due)}.
-            </span>
+        <div className="scroll-thin min-w-0 flex-1 overflow-y-auto px-8 py-6">
+          <div className="flex gap-5">
+            <Poster t={t} w={110} rounded={6} />
+            <div className="min-w-0">
+              <h2 className="text-[18px] font-semibold tracking-tight">{t.name}</h2>
+              <p className="text-[12.5px] text-t2">
+                {t.kind}. Launches {fmtDate(t.launch)}, {t.markets.length} markets, {t.release}.
+              </p>
+              <p className="mt-2 max-w-[560px] text-[13px] leading-5 text-t1">{t.logline}</p>
+              <p className="mt-2 text-[12px] text-t3">
+                Brief {b.status.toLowerCase()}. {b.owner}, due {fmtDate(b.due)}.
+              </p>
+            </div>
           </div>
           {b.status === "Not started" ? (
-            <div className="mt-4 rounded-[8px] border border-dashed border-line-strong p-6 text-[13px] leading-5 text-t2">
-              No brief yet. Launches {fmtDate(t.launch)} in {t.markets.length} markets. When the producer starts it, the objective, audience and must-haves are proposed from the
-              plan and the signals, and the producer edits before anyone sees it.
+            <div className="mt-6 max-w-[640px] rounded-[8px] border border-dashed border-line-strong p-5 text-[13px] leading-5 text-t2">
+              No brief yet. When the producer starts it, objective, audience and must-haves are proposed from the plan and this week&rsquo;s coverage, and the producer edits before
+              anyone sees it.
             </div>
           ) : (
-            <div className="mt-4 max-w-[720px] space-y-4">
+            <div className="mt-6 max-w-[640px] space-y-5">
               <Field label="Objective">{b.objective}</Field>
               <Field label="Audience">{b.audience}</Field>
               <Field label="Key message">
-                <span className="text-[15px]">{b.message}</span>
+                <span className="text-[16px] leading-6">{b.message}</span>
               </Field>
               <Field label="Tone">{b.tone}</Field>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-2 gap-5">
                 <Field label="Must have">
                   <ul className="list-disc space-y-1 pl-4">
                     {b.mustHave.map((x) => (
@@ -78,61 +84,26 @@ export default function Briefs() {
                   </ul>
                 </Field>
               </div>
-              <Field label="Deliverables and markets">
-                {t.markets.length} markets, six deliverables each: key art set, trailer, dubbed trailer, subtitles, social cuts, CRM email. Dates work back from {fmtDate(t.launch)} on
-                the launch board.
-              </Field>
             </div>
           )}
         </div>
 
-        <Panel side="right" width={360}>
-          <PanelHeader
-            title="What fans are saying"
-            right={
-              <span className="inline-flex items-center gap-1 text-[11px] text-t3">
-                <TrendingUp size={12} /> {s ? s.week : "no data"}
-              </span>
-            }
-          />
+        <Panel side="right" width={380}>
+          <PanelHeader title="Said this week" right={s ? <span className="text-[11px] text-t3">{s.week}</span> : undefined} />
           {s ? (
             <div className="scroll-thin min-h-0 flex-1 overflow-y-auto">
-              <Section title="This week">
-                <Row label="Mentions">
-                  <span className="mono">{s.volume.toLocaleString()}</span>
-                </Row>
-                <Row label="Positive">
-                  <span className="mono">{Math.round(s.sentiment * 100)}%</span>
-                </Row>
-              </Section>
-              <Section title="Trending phrases">
-                <ul className="space-y-2.5">
+              <div className="border-b border-line px-3 py-3">
+                <p className="text-[13px] leading-5 text-t1">{s.headline}</p>
+              </div>
+              <Section title="Coverage and chatter">
+                <ul className="space-y-3">
                   {s.top.map((x) => (
                     <li key={x.phrase}>
-                      <div className="flex items-baseline justify-between gap-2">
-                        <span className="text-[13px] font-medium">&ldquo;{x.phrase}&rdquo;</span>
-                        <span className="mono shrink-0 text-[11px] text-t3">
-                          {x.mentions.toLocaleString()} <span className={x.change >= 0 ? "text-ok" : "text-err"}>{x.change >= 0 ? "+" : ""}{Math.round(x.change * 100)}%</span>
-                        </span>
-                      </div>
+                      <p className="text-[13px] font-medium leading-5">{x.phrase}</p>
                       <p className="text-[12px] leading-4 text-t2">{x.note}</p>
-                      <p className="text-[11px] text-t3">{x.where}</p>
-                    </li>
-                  ))}
-                </ul>
-              </Section>
-              <Section title="Who is talking">
-                <ul className="space-y-1.5">
-                  {s.audiences.map((a) => (
-                    <li key={a.name} className="text-[12.5px]">
-                      <div className="flex items-center justify-between">
-                        <span>{a.name}</span>
-                        <span className="mono text-[11px] text-t3">{Math.round(a.share * 100)}%</span>
-                      </div>
-                      <div className="mt-1 h-1 overflow-hidden rounded-full bg-bg2">
-                        <div className="h-full bg-t2" style={{ width: `${a.share * 100}%` }} />
-                      </div>
-                      <span className="text-[11.5px] text-t3">{a.lean}</span>
+                      <a href={x.source} target="_blank" rel="noreferrer" className="mt-0.5 inline-flex items-center gap-1 text-[11px] text-t3 hover:text-t1">
+                        {x.where}, {x.date} <ExternalLink size={10} />
+                      </a>
                     </li>
                   ))}
                 </ul>
@@ -147,9 +118,10 @@ export default function Briefs() {
                   ))}
                 </ul>
               </Section>
+              <p className="px-3 pb-3 text-[11px] leading-4 text-t3">From public coverage, gathered {fmtDate("2026-10-07")}. In production this panel reads the listening feed.</p>
             </div>
           ) : (
-            <p className="p-3 text-[12.5px] leading-5 text-t2">Listening starts six weeks before launch. Nothing yet for {t.name}.</p>
+            <p className="p-3 text-[12.5px] leading-5 text-t2">Listening starts six weeks before launch. Nothing gathered yet for {t.name}.</p>
           )}
         </Panel>
       </div>

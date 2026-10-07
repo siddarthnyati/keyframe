@@ -1,77 +1,81 @@
-# Keyframe — PR/FAQ
+# Launch Desk — PR/FAQ
 
 For Kyle Reilly-Johnston, Head of Marketing Technology & Enablement, Prime Video, and the Global Marketing Tooling team.
 Sid Nyati, candidate for Product Manager, Prime Video Marketing AI, Automation & Tooling (job 10569110). 7 October 2026.
 
-A draft in Amazon's Working Backwards format. Keyframe does not exist inside Amazon; a prototype does, described in the README beside this file. Quotes are illustrative constructions and nothing is attributed to anyone at Amazon. Tags: `[OBSERVED: source]` public document I read · `[REPORTED: who]` secondhand or vendor-published · `[ASSUMED]` my inference · `[UNKNOWN]` could not find out · `[NEEDS EVIDENCE]` a number I do not have and did not invent.
+Launch Desk does not exist inside Amazon; a prototype does (see the README). It replaces Keyframe, a creative tool pitched at an operations team; only the spec-check engine survives. Quotes are illustrative; nothing is attributed to anyone at Amazon. Tags: `[OBSERVED: source]` public document I read · `[REPORTED: who]` secondhand · `[ASSUMED]` my inference · `[UNKNOWN]` could not find out · `[NEEDS EVIDENCE]` a number I do not have and did not invent.
 
 ---
 
 ## Press release
 
-### Keyframe: one approved trailer in, a spec-compliant launch art set out, in every language-locale
+### Launch Desk: is this title ready in every market, what is blocking it, and what do I send
 
-*Prime Video marketing and localization producers can turn an approved trailer into poster, cover, hero and social artwork for 30 or more language-locales, see every spec failure before upload, and learn which variant customers chose.*
+*Prime Video marketing and localization producers see every market's deliverables for a title launch on one board, learn about a spec failure on the day a file arrives, and send a Monday status drafted from the board instead of compiled by hand.*
 
-**Culver City, Calif.** — [launch date] — Prime Video's Global Marketing Tooling team today released Keyframe, an internal tool for the producers who prepare a title's artwork for launch. Keyframe shortlists the strongest frames from an approved trailer, renders the four in-app art formats per language-locale with the Slate artwork rules checked on every render, and reports back which variant each customer cohort saw, whether they clicked, and whether they kept watching. A producer finds out about a spec failure at the desk, not at upload, and for the first time learns whether the art they shipped worked.
+**Culver City, Calif.** — [launch date] — Prime Video's Global Marketing Tooling team today released Launch Desk, a tool for the producers who run a title launch across markets. It opens on one sentence per launch: "The Terminal List season 2 launches in 12 markets in 14 days. Not ready. 3 things are blocking it." Under it sit the blockers, the new requests and the slate. A producer who used to open four trackers to answer "are we ready?" now reads it in ten seconds.
 
-**The problem.** A Central Marketing Localization producer versions key art for one title across 37 or more languages and 240 or more territories through artwork adaptation houses, keeps a production asset tracker by hand, and troubleshoots creative and technical rejections after they happen `[OBSERVED: Amazon CML producer postings]`. One title needs roughly 450 to 750 in-app art files before any social cut exists: five art types, three to five variants, 30 or more locales `[ASSUMED: arithmetic from the Slate format list and the variant programme; no internal count]`. The rules keep tightening: a 2:3 poster is mandatory and non-compliant titles have been filtered from mobile carousels since 30 January 2026; hero art must be text-free; title treatments must stay legible on small devices; and since January 2026 artwork is keyed to language-locale, not territory overrides `[OBSERVED: Video Central Slate supply-chain updates, July and December 2025]`. A failure surfaces at upload, in Asset Quick View, after the vendor round is paid for `[REPORTED: research brief, 7 Oct 2026; the exact rejection point is a question for GMT]`. Prime Video already serves personalized artwork variants keyed to themes such as romance, action or a named talent `[OBSERVED: Video Central, personalized artwork delivery variants; arXiv 2205.04528]`, but I found no public evidence that the producer who delivered a variant ever learns which one won `[UNKNOWN]`. What this costs per title today in hours, rejections and revision rounds: `[NEEDS EVIDENCE: baseline from GMT and CML trackers]`.
+**The problem.** A Prime Video campaign manager manages intake through ticketing, writes briefs, checks assets against channel specs, traffics them across territories and reports status to stakeholders `[OBSERVED: Prime Video US Streaming and Campaign Operations postings]`. A Central Marketing Localization producer versions one title across 37 or more languages and 240 or more territories through dubbing studios, subtitle vendors and adaptation houses, keeps the asset tracker by hand, and troubleshoots rejections after they happen `[OBSERVED: Amazon CML producer postings]`. Their day is chase, check, route, report. The rules keep tightening: a 2:3 poster is mandatory and non-compliant titles have been filtered from mobile carousels since 30 January 2026; hero art must be text-free; title treatments must stay legible on small devices; and since January 2026 artwork is keyed to language-locale, not territory overrides `[OBSERVED: Video Central Slate supply-chain updates, July and December 2025]`. A failure surfaces at upload, in Asset Quick View, after the vendor round is paid for `[REPORTED: research brief, 7 Oct 2026; the exact rejection point is a question for GMT]`. The cost per launch in hours: `[NEEDS EVIDENCE: baseline from GMT and CML trackers]`.
 
-**What the producer does now.** Three screens, one title launch.
+**What the producer does now.** Six screens, each opening with a sentence that says what it is for.
 
-*Shortlist.* Drop the approved trailer. The browser samples a frame every 1.5 seconds, scores focus and exposure locally, folds near-duplicates, and sends the top 24 to a vision model for a designer's read: faces, mood, theme tags from the service's own variant taxonomy, burned-in text, and one sentence on why. The producer stars three. The tool proposes; the producer decides.
+*Today.* One line per launch, then the blockers with a plain reason, the new requests, and the slate.
 
-*Variants.* Each starred frame becomes a 2:3 poster, a 16:9 cover with title treatment, a 16:9 text-free hero and a 1:1 social, per language-locale. Every render carries the spec checks: title legible at the smallest carousel size, tagline inside the safe area, hero text-free, badge colour. A failing cell goes red before anything leaves the tool. The producer swaps one slot, not the set, and exports a ZIP with a manifest carrying theme tags, locale and variant id.
+*Requests.* The intake queue: asset requests, localization, spec rejections, placements, briefs, data pulls, budget. The model suggests an owner, links the request to the board cell it affects, and gives a reason: "Same cut is in review for the tagline overflow. Fold into one delivery." The producer confirms or changes it. Nothing is re-typed.
 
-*Audiences.* Three cohorts side by side, including a member who arrived through a telecom partner with only coarse, consented signals. The screen shows which variant each cohort would see, holds back an explore slice, and returns the two numbers a producer never gets today: who clicked, and who was still watching at two minutes. A "clicked but bailed" flag catches art that misleads.
+*Briefs.* The creative brief every vendor works from, beside what fans are saying about the title this week, so the brief is written from evidence. The signals are illustrative; in production they come from an existing listening feed.
 
-**What they use today.** Adaptation vendors, hand-kept trackers, and tools producers assemble themselves. Sports marketing runs on Airtable plus internal tools and scripts `[OBSERVED: Prime Video sports-marketing posting]`; I infer the wider estate is similarly mixed `[ASSUMED]`. Finished assets live in Iconik, tagged by a Bedrock, Nova and Rekognition pipeline `[OBSERVED: AWS Media blog]`. An internal AI artwork tool exists and a Bangalore Creative Specialist, Artwork team corrects its output `[OBSERVED: Amazon posting]`. What falls short is not generation. None of these tells the producer, before upload, that a render fails a rule, and none returns performance to the person who made the variant.
+*Launch board.* Rows are markets. Columns are deliverables: key art set, trailer, dubbed trailer, subtitles, social cuts, CRM email. Each cell carries owner, due date and state. Spec checks run on receipt, so "no 2:3 poster in the set" shows on the day, not at upload. This is the sheet producers keep by hand today.
 
-> "I used to find out a hero had text on it when the upload bounced, and by then the adaptation house had billed the round. Now the cell goes red before I export, and two weeks after launch I can see the romance variant beat the action one in Brazil."
+*Markets.* A world map of where campaigns are live, launching or blocked. Click a market for what each title still owes there.
+
+*Updates.* The Monday stakeholder status and the vendor chase email, drafted by the model from the board state, edited and sent by the producer. Nothing sends itself.
+
+**What they use today.** Ticket queues and hand-kept trackers. Sports marketing runs on Airtable plus internal tools and scripts `[OBSERVED: Prime Video sports-marketing posting]`; I infer the wider estate is similar `[ASSUMED]`. Finished assets live in Iconik, tagged by a Bedrock, Nova and Rekognition pipeline `[OBSERVED: AWS Media blog]`; an internal AI artwork tool exists with a Bangalore QC team behind it `[OBSERVED: Amazon posting]`. None answers the Monday question in one place, runs the spec rules on receipt, or drafts the status from state it already holds.
+
+> "Monday used to be two hours reading four trackers to write one email. Now the board writes the first draft and I spend the two hours on the German dub that slipped."
 > — Localization producer, CML `[illustrative construction, not a real statement]`
 
-> "Generation is not the gap. Adobe, Canva and Amazon Ads' Creative Agent already generate. The gap for a streaming marketer is selection, versioning and QC of title-specific truth: approved art, localized title treatments, the Slate rules, and knowing which variant worked. We built Keyframe to close that loop, and we kept a human on every export."
+> "The marketer's question is not 'make me art'. It is 'is this title ready, what is blocking it, and what do I send'. We built the desk that answers it, used the model only on toil, and kept a person on every send."
 > — Product Manager, Global Marketing Tooling `[illustrative construction; the candidate's thesis, not an Amazon statement]`
 
-**Getting started.** Open Keyframe, drop the trailer or pick the sample title, star three frames. The art set, the badges and the ZIP follow `[ASSUMED: minutes on the 90-second sample; not measured at trailer length]`.
+**Getting started.** Open Launch Desk. Seeded slate of real Prime Video titles from public announcements, artwork from IMDb, no login; The Terminal List season 2 is 14 days out with 60 of 68 deliverables approved and 3 blocking `[ASSUMED: statuses, vendors and ratio invented; dates and titles observed]`.
 
-**How we will know.** Hours from "art approved" to "all locales spec-compliant"; rejections per title at upload; revision rounds per localized asset; share of variants with performance feedback returned to the marketer. All four need a baseline first `[NEEDS EVIDENCE]`.
+**How we will know.** Hours per week a producer spends compiling status. Spec rejections caught before upload. Days late per market, visible the day they go late. Requests re-typed into a tracker, which should go to zero. All four need a baseline `[NEEDS EVIDENCE]`.
 
 ---
 
 ## FAQ
 
-Tags: `ANSWERED` (known, with provenance) · `OPEN` (needs an answer) · `BLOCKER` (a named role must answer before work proceeds).
+Tags: `ANSWERED` · `OPEN` · `BLOCKER` (a named role must answer before work proceeds).
 
-**EFAQ-01 · Who is it for, and not for? · ANSWERED.** The marketing or localization producer with approved art and a trailer who must deliver the in-app set across formats and locales. Not designers making key art from scratch, not paid-media buyers. Source: PR subheading.
+**EFAQ-01 · Who is it for, and not for? · ANSWERED.** The production manager or localization producer who owns a title's launch across markets and must say, every week, whether it is ready. Not designers, not the artwork science team, not paid-media buyers.
 
-**EFAQ-02 · Why not generate art? · ANSWERED.** Every frame comes from footage already cleared for the title, so there is nothing new to clear with talent or legal. And generation is where the market already is: Adobe, Canva and Amazon Ads' Creative Agent all generate, and Prime Video's own AI artwork tool already needs a human QC team behind it `[OBSERVED: vendor announcements; Bangalore posting]`. The unfilled gap is selection, versioning and QC. Source: PR spokesperson quote.
+**EFAQ-02 · Why an operations tool and not a creative one? · ANSWERED.** The posting says the team "sits at the center of Prime Video's marketing operations" and asks where tedious work can be eliminated `[OBSERVED: job 10569110]`. Generation is already covered by Adobe, Canva, Amazon Ads' Creative Agent and Prime Video's own artwork tool `[OBSERVED: vendor announcements; Bangalore posting]`. The gap is intake, readiness, spec QC on receipt and the status email.
 
-**EFAQ-03 · What does the producer stop doing? · ANSWERED, baseline open.** Manual resizing into four formats, re-versioning the same slot per locale, and learning about rule failures at upload. Vendor case studies say a two-day delivery stretched to ten with resizing and versioning, and 15 proof rounds per project `[REPORTED: Celtra, Lytho; directional]`. Prime Video's own numbers: `[NEEDS EVIDENCE]`. Source: PR problem paragraph.
+**EFAQ-03 · What does the producer stop doing? · ANSWERED.** Reading several trackers to answer one question, re-typing requests from email, learning about a rule failure at upload, writing the Monday status from scratch. Hours saved: `[NEEDS EVIDENCE]`.
 
-**EFAQ-04 · What stays human? · ANSWERED.** Every star, slot swap, export and approval. Keyframe never uploads to Slate and never approves. Badges advise; they do not gate. Source: README, "What it deliberately does not do".
+**EFAQ-04 · What stays human? · ANSWERED.** Every triage decision, approval and send. The model suggests and drafts; the producer confirms, edits and sends. Spec checks advise; they do not reject. Launch Desk never uploads to Slate and never approves.
 
-**IFAQ-01 · How is quality measured? · OPEN.** Theme tags are checked against a hand-labelled frame set `[NEEDS EVIDENCE: agreement rate; the set is planned, the number not yet produced]`. Spec checks are pure functions over the rendered cell, so they are tested by construction: flip "Title on hero" and the check fails every time. In production: defects caught in Keyframe over defects caught at vendor QC or upload, which needs the rejection log. → Ask: GMT data owner.
+**IFAQ-01 · Where is the model used, and how is each use measured? · OPEN.** Three places. Triage suggestions, measured as the share accepted unchanged `[NEEDS EVIDENCE: needs real tickets]`. Spec checks, pure functions tested by construction: remove the 2:3 poster and the check fails every time. The two drafts, measured by edits before send. In production, defects caught on receipt over defects caught at upload, which needs the rejection log. → Ask: GMT data owner.
 
-**IFAQ-02 · What is the first metric, and is there a baseline? · BLOCKER.** Hours from "art approved" to "all locales spec-compliant", then rejections per title at upload. I hold neither baseline and do not know whether it exists in one place. If it is spread across trackers, week one is assembling it by hand for ten recent titles. → BLK-01 · DATA · high · Owner: GMT PM with CML production leads · Status: OPEN · Blocks any improvement claim.
+**IFAQ-02 · What is the first metric, and is there a baseline? · BLOCKER.** Hours per week compiling status, then spec rejections caught before upload. I hold neither. If none exists, week one is timing ten producers through one Monday. → BLK-01 · DATA · high · Owner: GMT PM with CML production leads · Status: OPEN · Blocks any improvement claim.
 
-**IFAQ-03 · What exists already, and who owns it? · BLOCKER.** Confirmed: Iconik with an AWS tagging pipeline; an internal AI artwork tool with human QC; a variant selection system `[OBSERVED: AWS blog; postings; arXiv 2205.04528]`. Inferred: Airtable and internal trackers hold production truth `[ASSUMED: from a sports-marketing posting; correct me]`. Shortlist should consume the existing tagging pipeline, not replace it. Audiences needs a per-variant performance feed another team owns and may not expose to marketing. → BLK-02 · DEPENDENCY · medium · Owner: personalization or artwork-serving lead · Status: OPEN · Blocks Audiences beyond a simulation.
+**IFAQ-03 · What exists already, and what does this depend on? · BLOCKER.** Confirmed: a ticketing channel for intake, Iconik, an internal artwork tool `[OBSERVED: postings; AWS blog]`. Inferred: Airtable and internal trackers hold production truth `[ASSUMED: from a sports-marketing posting; correct me]`. Launch Desk should read from the ticket queue and the DAM, not replace either. The signals panel depends on a listening feed another team owns `[UNKNOWN: whether producers can see it]`. → BLK-02 · DEPENDENCY · medium · Owner: GMT tooling lead · Status: OPEN · Blocks anything beyond seeded data.
 
-**IFAQ-04 · Legal and privacy? · OPEN.** Rights ride on the trailer's existing clearance `[ASSUMED: confirm that a still from a cleared trailer inherits it]`. Audiences only works if cohort signals are consented for marketing use; in the prototype they are illustrative. → Ask: privacy counsel.
+**IFAQ-04 · Legal and privacy? · OPEN.** Drafting calls send board state, never assets `[ASSUMED: confirm the endpoint and data terms GMT uses]`. A production signals feed needs its own review. → Ask: privacy counsel.
 
-**IFAQ-05 · What is deliberately out? · ANSWERED.** Generative art (clearance risk, commoditized). Paid-media optimisation (Mixed Media Engineering owns it `[OBSERVED: posting]`). Auto-approval. Territory overrides (language-locale has been the model since January 2026 `[OBSERVED: Slate update]`).
+**IFAQ-05 · What is deliberately out? · ANSWERED.** Generative art. Frame picking and variant choice (artwork science owns it `[OBSERVED: Video Central personalized artwork variants; arXiv 2205.04528]`). Paid-media optimisation (Mixed Media Engineering owns it `[OBSERVED: posting]`). Auto-approval. Auto-send. A social listening product; signals are an input to the brief. Territory overrides `[OBSERVED: language-locale since January 2026, Slate update]`.
 
-**IFAQ-06 · Why would producers adopt it? · OPEN.** Only if it sits in the path they already walk: trailer in, Slate-ready ZIP out, manifest in the DAM's shape. One more tool beside the tracker will not be used. → Ask: CML production leads, by direct observation.
-
-**IFAQ-07 · What would I learn in week one? · ANSWERED.** Which trackers hold the truth for a launch and how many; where rejections surface and how late; whether anyone returns variant performance to producers; whether the first metric's baseline exists or must be built. The prototype starts those conversations; it is not a proposal to ship as is.
+**IFAQ-06 · Why would producers adopt it, and what would I learn in week one? · OPEN.** Only if it sits where the truth already is: tickets in, board state out, email in the producer's own voice. The test is whether a producer opens it on Monday instead of the spreadsheet. Week one, with CML production leads, is the five questions below. The prototype starts those conversations; it is not a proposal to ship as is.
 
 **Open questions for the GMT team.** Five I would ask before changing a line of the prototype:
-1. What share of tooling requests are some form of "one more size or one more language"?
-2. Where do artwork rejections surface today, and how late? Is Asset Quick View the first place a producer sees one?
-3. Does the producer who delivered a variant ever learn which one won, and who holds that data?
-4. How many trackers does a single title launch live in?
+1. How many trackers does a single title launch live in, and who keeps each one current?
+2. Where do spec rejections surface, and how late? Is Asset Quick View the first place a producer sees one?
+3. How long does the Monday status take to compile, and how much of it is read?
+4. What share of requests arrive by email or chat rather than the ticket queue, and get re-typed?
 5. What did the Disney+ AI upskilling programme teach you about adoption that a tool alone cannot fix?
 
 ---
 
-*Critic pass, structural dimensions: customer specificity, evidence presence, alternative named, traceability, clarity, completeness all PASS; every missing number is left visible as `[NEEDS EVIDENCE]` rather than invented. Strategic fit and falsifiability are not evaluable from the document; they are the five questions above.*
+*Critic pass: customer specificity, evidence, alternative named (Keyframe, retired; an explainer page over it, rejected), traceability, clarity, completeness all PASS. Missing numbers are left as `[NEEDS EVIDENCE]`.*

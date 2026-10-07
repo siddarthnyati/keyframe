@@ -6,7 +6,7 @@ Built as a working sketch for a conversation with Prime Video's Global Marketing
 
 ## The six screens
 
-1. **Today.** One sentence per launch: "Sintel launches in 8 markets in 9 days. Not ready. 3 things are blocking it." Then the blockers, the new requests since Friday, and the slate.
+1. **Today.** One sentence per launch: "The Terminal List season 2 launches in 12 markets in 14 days. Not ready. 3 things are blocking it." Then the blockers, the new requests since Friday, and the slate.
 2. **Requests.** The intake queue: asset requests, localization, spec rejections, placements, briefs, data pulls, budget. Each one is read once, linked to the launch board, and given a suggested owner and a reason. The producer confirms or changes it.
 3. **Briefs.** The creative brief every vendor works from, beside what fans are saying about the title this week, so the brief is written from evidence. The signals are illustrative; in production they come from the listening feed.
 4. **Launch board.** Markets by deliverables: key art set, trailer, dubbed trailer, subtitles, social cuts, CRM email. Each cell has an owner, a due date and a state. Spec checks run on receipt, so a rejection shows up on the day, not at upload. This is the sheet producers keep by hand today.
@@ -34,4 +34,4 @@ npm run dev
 
 Without a key the Updates screen shows the seeded drafts instead of regenerating them.
 
-Titles are Blender Foundation open movies (CC BY). Every vendor, person, number and signal is invented for the demo. Nothing here is Amazon data.
+Titles, launch dates and artwork are real Prime Video titles from public announcements and IMDb, shown to illustrate a prototype for the team; they belong to Amazon MGM Studios and their partners. The "said this week" panel is real public coverage with sources. Vendors, people, tickets, statuses and numbers are invented. Nothing here is Amazon data.
