@@ -15,8 +15,8 @@ export default function Briefs() {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <PageIntro title="Briefs">
-        The brief every vendor and agency works from, beside what is being said about the title this week, so it is written from evidence.
+      <PageIntro title="Write the brief">
+        The brief Dev writes and every agency and vendor works from, beside what is being said about the title this week, so it is written from evidence.
       </PageIntro>
       <div className="flex min-h-0 flex-1 border-t border-line">
         <Panel side="left" width={236}>

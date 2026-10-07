@@ -23,14 +23,14 @@ function Launches() {
   const t = titleById[titleId];
   const cells = cellsFor(titleId);
   const r = readiness(titleId);
-  const [selKey, setSelKey] = useState<string | null>(r.blockers[0] ? `${r.blockers[0].market}:${r.blockers[0].deliverable}` : null);
+  const [selKey, setSelKey] = useState<string | null>(params.get("cell") ?? (r.blockers[0] ? `${r.blockers[0].market}:${r.blockers[0].deliverable}` : null));
   const sel = cells.find((c) => `${c.market}:${c.deliverable}` === selKey) ?? r.blockers[0] ?? cells[0];
   const dtl = daysToLaunch(t);
 
   return (
     <div className="flex h-full min-h-0 flex-col">
       <PageIntro
-        title="Launch board"
+        title="Check the launch"
         right={
           <label className="flex items-center gap-2 text-[12px] text-t2">
             Title
@@ -45,7 +45,7 @@ function Launches() {
           </label>
         }
       >
-        Every market, every deliverable, who owes it and when. Spec checks run as files arrive, so a rejection shows here on the day, not at upload.
+        Priya&rsquo;s tracker, kept for her. Every market, every deliverable, who owes it and when. Spec checks run as files arrive, so a rejection shows here on the day, not at upload.
       </PageIntro>
 
       <div className="flex min-h-0 flex-1 border-t border-line">

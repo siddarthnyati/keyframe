@@ -4,14 +4,14 @@ The producer's desk for a title launch. One place to see what is ready, what is 
 
 Built as a working sketch for a conversation with Prime Video's Global Marketing Tooling team. It is the tool a marketing or localization producer would open on Monday morning. Every screen starts with one sentence that says what it is for. All data is seeded, so it reads without clicking anything and without a login.
 
-## The six screens
+## One team, two chairs
 
-1. **Today.** One sentence per launch: "The Terminal List season 2 launches in 12 markets in 14 days. Not ready. 3 things are blocking it." Then the blockers, the new requests since Friday, and the slate.
-2. **Requests.** The intake queue: asset requests, localization, spec rejections, placements, briefs, data pulls, budget. Each one is read once, linked to the launch board, and given a suggested owner and a reason. The producer confirms or changes it.
-3. **Briefs.** The creative brief every vendor works from, beside what fans are saying about the title this week, so the brief is written from evidence. The signals are illustrative; in production they come from the listening feed.
-4. **Launch board.** Markets by deliverables: key art set, trailer, dubbed trailer, subtitles, social cuts, CRM email. Each cell has an owner, a due date and a state. Spec checks run on receipt, so a rejection shows up on the day, not at upload. This is the sheet producers keep by hand today.
-5. **Markets.** A world map of where campaigns are live, launching or blocked. Click a market for what each title still owes there.
-6. **Updates.** The Monday status and the vendor chase email, drafted from the board state, edited and sent by the producer. Nothing sends itself.
+Built for Title Launch Marketing, Prime Video Originals. The front door names the two people on it and you pick one:
+
+- **Priya, Marketing Production Manager.** Start Monday (blockers first), Check the launch (markets by deliverables with spec checks on receipt), Send the update (vendor chase and production status, drafted from the board).
+- **Dev, Campaign Manager.** Start Monday (placements on a map, new requests, briefs due), Triage requests (intake linked to the board with a suggested owner), Write the brief (beside this week's sourced coverage), Send the status (to the marketing lead, drafted).
+
+Each chair has a "Follow their morning" tour: five stops, one sentence each, ending on what they used to do by hand. The requirements, priorities and what was deliberately not built are in `docs/REQUIREMENTS.md`.
 
 ## Where the model is used, and where it is not
 

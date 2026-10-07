@@ -1,17 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { Sparkle } from "lucide-react";
 import Poster from "@/components/Poster";
 import { PageIntro } from "@/components/Shell";
 import { Button, Panel, PanelHeader, Section, Segmented } from "@/components/ui";
-import { DELIVERABLES, UPDATE_SEED, cellsFor, fmtDate, marketByCode, readiness, titleById } from "@/lib/data";
+import { DELIVERABLES, UPDATE_SEED, UPDATE_SEED_CAMPAIGN, cellsFor, fmtDate, marketByCode, readiness, titleById } from "@/lib/data";
 
-type Kind = "status" | "chase";
+type Kind = "status" | "chase" | "campaign";
 
-export default function Updates() {
-  const [kind, setKind] = useState<Kind>("status");
-  const [text, setText] = useState<Record<Kind, string>>({ status: UPDATE_SEED.status, chase: UPDATE_SEED.chase });
+export default function UpdatesPage() {
+  return (
+    <Suspense>
+      <Updates />
+    </Suspense>
+  );
+}
+
+export function Updates({ mode = "production" }: { mode?: "production" | "campaign" }) {
+  const params = useSearchParams();
+  const kinds: { id: Kind; label: string }[] =
+    mode === "campaign"
+      ? [{ id: "campaign", label: "Campaign status" }]
+      : [
+          { id: "status", label: "Production status" },
+          { id: "chase", label: "Vendor chase" },
+        ];
+  const initial = (params.get("kind") as Kind | null) && kinds.some((k) => k.id === params.get("kind")) ? (params.get("kind") as Kind) : kinds[0].id;
+  const [kind, setKind] = useState<Kind>(initial);
+  const [text, setText] = useState<Record<Kind, string>>({ status: UPDATE_SEED.status, chase: UPDATE_SEED.chase, campaign: UPDATE_SEED_CAMPAIGN });
   const [busy, setBusy] = useState(false);
   const [note, setNote] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
@@ -38,7 +56,7 @@ export default function Updates() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <PageIntro
-        title="Updates"
+        title={mode === "campaign" ? "Send the status" : "Send the update"}
         right={
           <Segmented<Kind>
             value={kind}
@@ -47,26 +65,25 @@ export default function Updates() {
               setSent(false);
               setNote(null);
             }}
-            options={[
-              { id: "status", label: "Monday status" },
-              { id: "chase", label: "Vendor chase" },
-            ]}
+            options={kinds}
           />
         }
       >
-        The two emails a producer writes most, drafted from the launch board with the real dates and owners in. The producer edits and sends. Nothing sends itself.
+        {mode === "campaign"
+          ? "The Monday status to the marketing lead, drafted from the board, the queue and the brief. Dev edits and sends. Nothing sends itself."
+          : "The two emails Priya writes most, drafted from the launch board with the real dates and owners in. She edits and sends. Nothing sends itself."}
       </PageIntro>
       <div className="flex min-h-0 flex-1 border-t border-line">
         <div className="flex min-w-0 flex-1 flex-col p-8">
           <div className="flex items-center gap-3">
             <Poster t={t} w={28} rounded={3} />
-            <p className="text-[13.5px] font-medium">{kind === "status" ? `${t.name}, status for the week of ${fmtDate("2026-10-07")}` : "Nordlicht Dub, German trailer"}</p>
+            <p className="text-[13.5px] font-medium">{kind === "chase" ? "To Nordlicht Dub, German trailer" : kind === "campaign" ? `To the marketing lead, ${t.name}, week of ${fmtDate("2026-10-07")}` : `To the marketing lead and Dev, ${t.name}, week of ${fmtDate("2026-10-07")}`}</p>
             <span className="ml-auto" />
             <Button onClick={regenerate} disabled={busy}>
               <Sparkle size={13} /> {busy ? "Drafting" : "Draft again from the board"}
             </Button>
             <Button primary onClick={() => setSent(true)} disabled={sent}>
-              {sent ? "Marked as sent" : kind === "status" ? "Send to stakeholders" : "Send to vendor"}
+              {sent ? "Marked as sent" : kind === "chase" ? "Send to vendor" : "Send to the marketing lead"}
             </Button>
           </div>
           {note && <p className="mt-2 text-[12px] text-t3">{note}</p>}

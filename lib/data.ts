@@ -391,3 +391,78 @@ Delivery spec is unchanged: ProRes 422 HQ, stereo and 5.1 stems, 25 fps, filenam
 Thank you,
 Priya`,
 };
+
+
+// The two people this desk is built for. Invented names, real job titles from Amazon's postings.
+export type Persona = {
+  id: "production" | "campaign";
+  name: string;
+  first: string;
+  role: string;
+  org: string;
+  city: string;
+  owns: string;
+  line: string;
+  monday: string;
+};
+export const PERSONAS: Persona[] = [
+  {
+    id: "production",
+    name: "Priya Natarajan",
+    first: "Priya",
+    role: "Marketing Production Manager",
+    org: "Prime Video International Originals",
+    city: "London",
+    owns: "Getting The Terminal List season 2 produced, localized and delivered for 12 markets by Oct 21. Four vendors, one schedule.",
+    line: "I own the schedule. Every key art set, trailer, dub and subtitle file in every market, and the vendors who owe them.",
+    monday: "Who is late, what got rejected, what arrived over the weekend, and the update my marketing lead expects by 10am.",
+  },
+  {
+    id: "campaign",
+    name: "Dev Okafor",
+    first: "Dev",
+    role: "Campaign Manager",
+    org: "Prime Video US Streaming",
+    city: "Culver City",
+    owns: "The Terminal List season 2 campaign: the request queue, the brief, the placements, and status to the marketing lead.",
+    line: "I own the campaign. Requests come to me by ticket, I write the brief the agencies work from, and I report up.",
+    monday: "What landed in the queue, which brief is due, where the campaign is running this week, and the status I send up.",
+  },
+];
+export const personaById = Object.fromEntries(PERSONAS.map((p) => [p.id, p])) as Record<Persona["id"], Persona>;
+
+// Where the campaign runs: placements booked per market. Invented.
+export type Placement = { title: string; market: string; channel: string; window: string; status: "Booked" | "Live" | "Pending art" | "Proposed" };
+export const PLACEMENTS: Placement[] = [
+  { title: "terminal", market: "US", channel: "Homepage hero", window: "Oct 21 to 23", status: "Booked" },
+  { title: "terminal", market: "US", channel: "Paid social, Meta and TikTok", window: "Oct 14 to 28", status: "Booked" },
+  { title: "terminal", market: "US", channel: "CRM email, Prime members", window: "Oct 21", status: "Booked" },
+  { title: "terminal", market: "UK", channel: "Homepage hero", window: "Oct 21 to 22", status: "Booked" },
+  { title: "terminal", market: "DE", channel: "Paid social", window: "Oct 16 to 28", status: "Pending art" },
+  { title: "terminal", market: "BR", channel: "TikTok, 9:16 cut", window: "Oct 18 to 28", status: "Pending art" },
+  { title: "terminal", market: "JP", channel: "Mobile carousel", window: "Oct 21", status: "Pending art" },
+  { title: "terminal", market: "IN", channel: "CRM email, Hindi", window: "Oct 21", status: "Booked" },
+  { title: "terminal", market: "MX", channel: "Paid social", window: "Oct 16 to 28", status: "Booked" },
+  { title: "love", market: "US", channel: "Homepage hero", window: "Oct 14 to 16", status: "Booked" },
+  { title: "love", market: "UK", channel: "Paid social", window: "Oct 10 to 20", status: "Live" },
+  { title: "carrie", market: "US", channel: "Homepage hero", window: "Oct 7 to 9", status: "Live" },
+  { title: "carrie", market: "UK", channel: "Homepage hero", window: "Oct 7 to 8", status: "Live" },
+  { title: "carrie", market: "DE", channel: "Paid social", window: "Oct 5 to 14", status: "Live" },
+  { title: "prefiero", market: "MX", channel: "Homepage hero", window: "Oct 2 to 5", status: "Live" },
+  { title: "madden", market: "US", channel: "Thursday Night Football spots", window: "Nov 5 to 18", status: "Proposed" },
+];
+
+export const UPDATE_SEED_CAMPAIGN = `The Terminal List season 2, campaign status, Mon Oct 7. Launch Oct 21, 14 days out.
+
+Campaign on track. Production is not ready yet: 3 items blocking (Germany dub late, Japan key art rejected, Brazil social cut failing spec). Priya has owners and dates on all three; I am not escalating this week.
+
+Placements
+US homepage hero Oct 21 to 23, UK hero Oct 21 to 22, paid social US and MX from Oct 14 and 16, CRM in US and India on launch day: all booked. Germany paid social, Brazil TikTok and the Japan mobile carousel are waiting on the three production items above.
+
+Requests
+Two new since Friday: the Japan 2:3 rejection (routed to Halftone Studio, due Oct 8) and a 9:16 cut for TikTok Brazil (folded into the Brazil social delivery, due Oct 14). Twelve open in total, nothing unowned.
+
+Brief
+Approved Sep 25. Coverage this week says fans are rewatching season 1 and Dark Wolf ahead of launch, so I am adding a catch-up CTA to the CRM and the first social cut. No other changes.
+
+Nothing needed from this group this week.`;

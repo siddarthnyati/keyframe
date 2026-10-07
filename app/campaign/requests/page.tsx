@@ -19,7 +19,7 @@ export default function Requests() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <PageIntro
-        title="Requests"
+        title="Triage requests"
         right={
           <Segmented<Filter>
             value={filter}
@@ -32,7 +32,7 @@ export default function Requests() {
           />
         }
       >
-        Everything that lands on a producer, read once and linked to the launch board, with a suggested owner. The producer confirms or changes it.
+        Everything that lands on Dev by ticket, read once and linked to the launch board, with a suggested owner and the reason. Dev confirms or changes it.
       </PageIntro>
       <div className="flex min-h-0 flex-1 border-t border-line">
         <div className="scroll-thin min-w-0 flex-1 overflow-y-auto">
