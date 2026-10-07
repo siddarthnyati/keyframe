@@ -30,7 +30,7 @@ function Launches() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <PageIntro
-        title="Check the launch"
+        title="Every file, every market"
         right={
           <label className="flex items-center gap-2 text-[12px] text-t2">
             Title
@@ -45,7 +45,7 @@ function Launches() {
           </label>
         }
       >
-        Priya&rsquo;s tracker, kept for her. Every market, every deliverable, who owes it and when. Spec checks run as files arrive, so a rejection shows here on the day, not at upload.
+        One row per market, one column per file the launch needs: key art, trailer, dub, subtitles, social cuts, CRM email. Each cell says who owes it, when, and whether it passed the spec checks on arrival.
       </PageIntro>
 
       <div className="flex min-h-0 flex-1 border-t border-line">
@@ -106,6 +106,7 @@ function Launches() {
                         <td key={d.id} className="border-t border-line py-2 pr-3 align-top">
                           <button
                             type="button"
+                            data-story={`cell-${key}`}
                             onClick={() => setSelKey(key)}
                             className={`block w-full rounded-[5px] border px-2 py-1.5 text-left transition-colors ${isSel ? "border-accent bg-sel" : "border-transparent hover:bg-hover"}`}
                           >

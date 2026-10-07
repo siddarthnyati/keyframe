@@ -19,7 +19,7 @@ export default function Requests() {
   return (
     <div className="flex h-full min-h-0 flex-col">
       <PageIntro
-        title="Triage requests"
+        title="Requests"
         right={
           <Segmented<Filter>
             value={filter}
@@ -41,7 +41,7 @@ export default function Requests() {
               const title = t.title ? titleById[t.title] : null;
               const active = sel?.id === t.id;
               return (
-                <li key={t.id}>
+                <li key={t.id} data-story={`row-${t.id}`}>
                   <button type="button" onClick={() => setSelId(t.id)} className={`flex w-full items-center gap-3 px-8 py-2.5 text-left ${active ? "bg-sel" : "hover:bg-hover"}`}>
                     {title ? <Poster t={title} w={30} rounded={3} /> : <span className="w-[30px] shrink-0" />}
                     <span className="min-w-0 flex-1">

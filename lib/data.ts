@@ -394,6 +394,7 @@ Priya`,
 
 
 // The two people this desk is built for. Invented names, real job titles from Amazon's postings.
+export type Todo = { text: string; why: string; href: string; cta: string; tone: "warn" | "err" | "accent" | "ok" };
 export type Persona = {
   id: "production" | "campaign";
   name: string;
@@ -401,10 +402,11 @@ export type Persona = {
   role: string;
   org: string;
   city: string;
-  owns: string;
-  line: string;
-  monday: string;
+  avatar: string;
+  thought: string;
+  todo: Todo[];
 };
+const AVATAR = (seed: string, bg: string) => `https://api.dicebear.com/9.x/notionists/svg?seed=${seed}&backgroundColor=${bg}&radius=50`;
 export const PERSONAS: Persona[] = [
   {
     id: "production",
@@ -413,9 +415,14 @@ export const PERSONAS: Persona[] = [
     role: "Marketing Production Manager",
     org: "Prime Video International Originals",
     city: "London",
-    owns: "Getting The Terminal List season 2 produced, localized and delivered for 12 markets by Oct 21. Four vendors, one schedule.",
-    line: "I own the schedule. Every key art set, trailer, dub and subtitle file in every market, and the vendors who owe them.",
-    monday: "Who is late, what got rejected, what arrived over the weekend, and the update my marketing lead expects by 10am.",
+    avatar: AVATAR("Priya-Natarajan", "ffd5dc"),
+    thought: "Fourteen days. Three things in my way. Let me clear them before the 10am.",
+    todo: [
+      { text: "Chase Nordlicht for the German dub of the trailer", why: "Late since Oct 5. Verbal ETA Oct 9. I need it in writing.", href: "/production/update?kind=chase", cta: "Send the chase, drafted", tone: "warn" },
+      { text: "Get the 2:3 poster added to the Japan key art set", why: "Rejected at upload Oct 6. Halftone has the files; it is one missing size.", href: "/production/launch?title=terminal&cell=JP:keyart", cta: "Open the file", tone: "err" },
+      { text: "Approve the revised Brazil 9:16 cut when it lands", why: "Tagline ran past the safe area. Agency has the note, due Oct 16.", href: "/production/launch?title=terminal&cell=BR:social", cta: "Open the file", tone: "accent" },
+      { text: "Send the 10am production status", why: "Drafted from the board. Read once, send.", href: "/production/update?kind=status", cta: "Read and send", tone: "ok" },
+    ],
   },
   {
     id: "campaign",
@@ -424,9 +431,14 @@ export const PERSONAS: Persona[] = [
     role: "Campaign Manager",
     org: "Prime Video US Streaming",
     city: "Culver City",
-    owns: "The Terminal List season 2 campaign: the request queue, the brief, the placements, and status to the marketing lead.",
-    line: "I own the campaign. Requests come to me by ticket, I write the brief the agencies work from, and I report up.",
-    monday: "What landed in the queue, which brief is due, where the campaign is running this week, and the status I send up.",
+    avatar: AVATAR("Dev-Okafor", "c0e8ff"),
+    thought: "Nine placements booked. Three are waiting on Priya's three. Two new tickets. Let me clear the queue.",
+    todo: [
+      { text: "Triage the two requests that landed since Friday", why: "Japan key art bounced; Brazil wants a TikTok cut. Owners already suggested.", href: "/campaign/requests", cta: "Triage, 2 new", tone: "err" },
+      { text: "Fold this week's coverage into the brief", why: "Fans are rewatching season 1 and Dark Wolf. That is a catch-up CTA.", href: "/campaign/brief", cta: "Open the brief", tone: "accent" },
+      { text: "Check the three placements waiting on production", why: "Germany, Brazil, Japan. Same three blockers on Priya's desk.", href: "/campaign#globe", cta: "See the globe", tone: "warn" },
+      { text: "Send Monday status to the marketing lead", why: "Drafted from the board, the queue and the brief.", href: "/campaign/status", cta: "Read and send", tone: "ok" },
+    ],
   },
 ];
 export const personaById = Object.fromEntries(PERSONAS.map((p) => [p.id, p])) as Record<Persona["id"], Persona>;

@@ -56,7 +56,7 @@ export function Updates({ mode = "production" }: { mode?: "production" | "campai
   return (
     <div className="flex h-full min-h-0 flex-col">
       <PageIntro
-        title={mode === "campaign" ? "Send the status" : "Send the update"}
+        title={mode === "campaign" ? "Status, drafted" : "Emails, drafted"}
         right={
           <Segmented<Kind>
             value={kind}
@@ -82,9 +82,11 @@ export function Updates({ mode = "production" }: { mode?: "production" | "campai
             <Button onClick={regenerate} disabled={busy}>
               <Sparkle size={13} /> {busy ? "Drafting" : "Draft again from the board"}
             </Button>
+            <span data-story="send">
             <Button primary onClick={() => setSent(true)} disabled={sent}>
               {sent ? "Marked as sent" : kind === "chase" ? "Send to vendor" : "Send to the marketing lead"}
             </Button>
+            </span>
           </div>
           {note && <p className="mt-2 text-[12px] text-t3">{note}</p>}
           <textarea

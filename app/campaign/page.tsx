@@ -2,20 +2,19 @@
 
 import Link from "next/link";
 import { useMemo, useState } from "react";
-import { ArrowRight } from "lucide-react";
-import PersonaStrip from "@/components/PersonaStrip";
+import { ArrowRight, Play } from "lucide-react";
+import Bubble from "@/components/Bubble";
+import Globe from "@/components/Globe";
 import Poster from "@/components/Poster";
-import { PriorityTag } from "@/components/status";
-import WorldMap, { type MarketTone } from "@/components/WorldMap";
-import { BRIEFS, MARKETS, PLACEMENTS, TICKETS, daysToLaunch, fmtDate, marketByCode, marketState, personaById, readiness, titleById } from "@/lib/data";
+import { Ring } from "@/components/status";
+import type { MarketTone } from "@/components/WorldMap";
+import { MARKETS, PLACEMENTS, SIGNALS, TICKETS, TITLES, daysToLaunch, fmtDate, marketByCode, marketState, personaById, readiness, titleById } from "@/lib/data";
+
+const TONE = { warn: "bg-warn", err: "bg-err", accent: "bg-prime", ok: "bg-ok" };
 
 export default function DevMonday() {
   const p = personaById.campaign;
   const hero = titleById.terminal;
-  const r = readiness(hero.id);
-  const newTickets = TICKETS.filter((t) => t.status === "New");
-  const open = TICKETS.filter((t) => t.status !== "Done").length;
-  const brief = BRIEFS.find((b) => b.title === hero.id)!;
   const placements = PLACEMENTS.filter((x) => x.title === hero.id);
   const waiting = placements.filter((x) => x.status === "Pending art");
   const [sel, setSel] = useState<string | null>("DE");
@@ -35,100 +34,116 @@ export default function DevMonday() {
     }
     return out;
   }, [hero.id]);
-
   const here = sel ? PLACEMENTS.filter((x) => x.market === sel) : [];
 
   return (
     <>
-      <PersonaStrip persona={p} />
-      <section className="border-b border-line px-8 py-7">
-        <p className="text-[12px] text-t3">Monday, {fmtDate("2026-10-07")}. {p.first}&rsquo;s campaign.</p>
-        <h1 className="mt-2 max-w-[900px] text-[24px] font-semibold leading-8 tracking-tight">
-          {hero.name}: {placements.length} placements booked across {new Set(placements.map((x) => x.market)).size} markets, {daysToLaunch(hero)} days out.{" "}
-          <span className="text-warn">{waiting.length} are waiting on production.</span> {newTickets.length} new requests, brief {brief.status.toLowerCase()}.
-        </h1>
-        <div className="mt-3 flex gap-5 text-[12.5px]">
-          <Link href="/campaign/requests" className="inline-flex items-center gap-1 text-t2 hover:text-t1">
-            Triage the {open} open requests <ArrowRight size={13} />
-          </Link>
-          <Link href="/campaign/status" className="inline-flex items-center gap-1 text-t2 hover:text-t1">
-            Monday status, drafted <ArrowRight size={13} />
+      <section className="relative overflow-hidden border-b border-line">
+        <div className="absolute inset-0 scale-110 bg-cover bg-center opacity-25 blur-3xl" style={{ backgroundImage: `url(${hero.poster})` }} aria-hidden />
+        <div className="absolute inset-0 bg-gradient-to-r from-app via-app/85 to-app/40" aria-hidden />
+        <div className="relative flex items-end justify-between gap-8 px-8 pb-6 pt-6">
+          <div>
+            <Bubble persona={p} text={p.thought} />
+            <p className="mt-6 text-[12px] text-t3">Monday, {fmtDate("2026-10-07")}</p>
+            <h1 className="mt-1 text-[28px] font-semibold leading-9 tracking-tight">
+              {hero.name} campaign: {placements.length} placements, {daysToLaunch(hero)} days out. <span className="text-warn">{waiting.length} waiting on production.</span>
+            </h1>
+          </div>
+          <Link href="/campaign?story=1" className="inline-flex h-9 shrink-0 items-center gap-2 rounded-full bg-prime px-3.5 text-[12.5px] font-semibold text-white hover:brightness-110">
+            <Play size={12} fill="currentColor" /> Follow my morning
           </Link>
         </div>
       </section>
 
-      <section className="grid grid-cols-[1fr_380px] gap-8 px-8 py-6">
-        <div>
+      <section className="grid grid-cols-[1fr_1fr] gap-8 px-8 py-6">
+        <div data-story="todo">
+          <h2 className="text-[11px] font-medium uppercase tracking-[0.1em] text-t3">To do today</h2>
+          <ol className="mt-3 space-y-3">
+            {p.todo.map((t, i) => (
+              <li key={t.text} className="flex items-center gap-4 rounded-[12px] border border-line bg-panel p-4">
+                <span className={`inline-flex size-9 shrink-0 items-center justify-center rounded-full text-[14px] font-semibold text-app ${TONE[t.tone]}`}>{i + 1}</span>
+                <span className="min-w-0 flex-1">
+                  <span className="block text-[14px] font-medium">{t.text}</span>
+                  <span className="block text-[12.5px] leading-4 text-t2">{t.why}</span>
+                </span>
+                <Link href={t.href} className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-t1 px-3.5 text-[12.5px] font-medium text-app hover:bg-white">
+                  {t.cta} <ArrowRight size={13} />
+                </Link>
+              </li>
+            ))}
+          </ol>
+        </div>
+        <div id="globe" data-story="globe">
           <div className="flex items-baseline justify-between">
-            <h2 className="text-[13px] font-medium text-t2">Where the campaign runs this week</h2>
-            <p className="text-[11.5px] text-t3">Red: a placement waiting on production. Green: live. Blue: booked. Click a market.</p>
+            <h2 className="text-[11px] font-medium uppercase tracking-[0.1em] text-t3">Where it runs this week</h2>
+            <p className="text-[11px] text-t3">Drag to spin. Red is waiting on production.</p>
           </div>
-          <div className="mt-3 rounded-[8px] border border-line bg-panel p-2">
-            <WorldMap tones={tones} selected={sel} onSelect={setSel} />
+          <div className="mt-3 flex gap-4 rounded-[16px] border border-line bg-panel p-3">
+            <Globe tones={tones} selected={sel} onSelect={setSel} />
+            <div className="min-w-0 flex-1 py-2">
+              <p className="text-[14px] font-semibold">{sel ? marketByCode[sel].name : "Pick a market"}</p>
+              <ul className="mt-2 space-y-2">
+                {here.map((x) => (
+                  <li key={`${x.title}-${x.channel}`} className="flex items-center gap-2.5">
+                    <Poster t={titleById[x.title]} w={24} rounded={3} />
+                    <span className="min-w-0 flex-1">
+                      <span className="block truncate text-[12.5px]">{x.channel}</span>
+                      <span className="block truncate text-[11px] text-t3">
+                        {titleById[x.title].name}, {x.window}
+                      </span>
+                    </span>
+                    <span className={`shrink-0 text-[11px] font-medium ${x.status === "Pending art" ? "text-warn" : x.status === "Live" ? "text-ok" : "text-t2"}`}>{x.status}</span>
+                  </li>
+                ))}
+                {here.length === 0 && <li className="text-[12px] text-t3">Nothing booked here.</li>}
+              </ul>
+              <ul className="mt-4 space-y-1 text-[11px] text-t3">
+                <li className="flex items-center gap-1.5">
+                  <span className="inline-block size-2 rounded-full bg-ok" /> Live
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <span className="inline-block size-2 rounded-full bg-prime" /> Booked
+                </li>
+                <li className="flex items-center gap-1.5">
+                  <span className="inline-block size-2 rounded-full bg-err" /> Waiting on production
+                </li>
+              </ul>
+            </div>
           </div>
-        </div>
-        <div>
-          <h2 className="text-[13px] font-medium text-t2">{sel ? marketByCode[sel].name : "Pick a market"}</h2>
-          <ul className="mt-3 divide-y divide-line rounded-[8px] border border-line bg-panel">
-            {here.map((x) => (
-              <li key={`${x.title}-${x.channel}`} className="flex items-center gap-3 px-3 py-2.5">
-                <Poster t={titleById[x.title]} w={26} rounded={3} />
-                <span className="min-w-0 flex-1">
-                  <span className="block text-[13px]">{x.channel}</span>
-                  <span className="block text-[12px] text-t2">
-                    {titleById[x.title].name}, {x.window}
-                  </span>
-                </span>
-                <span className={`text-[11.5px] ${x.status === "Pending art" ? "text-warn" : x.status === "Live" ? "text-ok" : "text-t2"}`}>{x.status}</span>
-              </li>
-            ))}
-            {here.length === 0 && <li className="px-3 py-3 text-[12.5px] text-t2">No placements here.</li>}
-          </ul>
-          {sel && waiting.some((x) => x.market === sel) && (
-            <p className="mt-2 text-[12px] leading-4 text-t3">
-              Waiting on production means Priya&rsquo;s board has this market blocked. The {r.blockers.length} blockers are the same ones on her desk.
-            </p>
-          )}
         </div>
       </section>
 
-      <section className="grid grid-cols-[1fr_380px] gap-8 px-8 pb-8">
-        <div>
-          <h2 className="text-[13px] font-medium text-t2">New in the queue since Friday</h2>
-          <ul className="mt-3 divide-y divide-line rounded-[8px] border border-line bg-panel">
-            {newTickets.map((t) => (
-              <li key={t.id} className="flex items-center gap-3 px-3 py-2.5">
-                {t.title ? <Poster t={titleById[t.title]} w={26} rounded={3} /> : <span className="w-[26px]" />}
-                <PriorityTag p={t.priority} />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px]">{t.subject}</span>
-                  <span className="block text-[12px] text-t2">
-                    {t.from}. Suggested owner {t.suggested.owner}.
-                  </span>
-                </span>
-                <span className="mono shrink-0 text-[11px] text-t3">due {fmtDate(t.due)}</span>
-              </li>
-            ))}
-          </ul>
+      <section className="px-8 pb-8">
+        <div className="flex items-baseline justify-between">
+          <h2 className="text-[11px] font-medium uppercase tracking-[0.1em] text-t3">How things are doing</h2>
+          <p className="text-[11px] text-t3">Scroll sideways. One card per title on the slate.</p>
         </div>
-        <div>
-          <h2 className="text-[13px] font-medium text-t2">Briefs on {p.first}&rsquo;s desk</h2>
-          <ul className="mt-3 divide-y divide-line rounded-[8px] border border-line bg-panel">
-            {BRIEFS.slice(0, 4).map((b) => (
-              <li key={b.title} className="flex items-center gap-3 px-3 py-2.5">
-                <Poster t={titleById[b.title]} w={26} rounded={3} />
-                <span className="min-w-0 flex-1">
-                  <span className="block truncate text-[13px]">{titleById[b.title].name}</span>
-                  <span className="block text-[12px] text-t2">
-                    {b.status}, due {fmtDate(b.due)}
-                  </span>
-                </span>
-              </li>
-            ))}
-          </ul>
-          <Link href="/campaign/brief" className="mt-2 inline-flex items-center gap-1 text-[12.5px] text-t2 hover:text-t1">
-            Write the brief <ArrowRight size={13} />
-          </Link>
+        <div className="scroll-thin mt-3 flex snap-x gap-4 overflow-x-auto pb-3">
+          {TITLES.map((t) => {
+            const r = readiness(t.id);
+            const s = SIGNALS[t.id];
+            const open = TICKETS.filter((x) => x.title === t.id && x.status !== "Done").length;
+            const booked = PLACEMENTS.filter((x) => x.title === t.id).length;
+            return (
+              <div key={t.id} className="relative w-[300px] shrink-0 snap-start overflow-hidden rounded-[16px] border border-line bg-panel">
+                <div className="absolute inset-0 bg-cover bg-center opacity-20 blur-2xl" style={{ backgroundImage: `url(${t.poster})` }} aria-hidden />
+                <div className="relative flex gap-3 p-4">
+                  <Poster t={t} w={64} rounded={5} />
+                  <div className="min-w-0">
+                    <p className="truncate text-[13.5px] font-semibold">{t.name}</p>
+                    <p className="text-[11.5px] text-t2">{t.stage === "live" ? `Live since ${fmtDate(t.launch)}` : `${fmtDate(t.launch)}, ${daysToLaunch(t)} days`}</p>
+                    <div className="mt-2 flex items-center gap-2">
+                      <Ring pct={r.pct} size={26} stroke={3} tone={r.blockers.length ? "var(--warn)" : undefined} />
+                      <span className="text-[11.5px] text-t2">
+                        {r.blockers.length ? `${r.blockers.length} blocking` : t.stage === "live" ? "delivered" : "on track"} · {booked} placements · {open} open
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <p className="relative line-clamp-2 px-4 pb-4 text-[12px] leading-4 text-t2">{s ? s.headline : "No coverage gathered yet."}</p>
+              </div>
+            );
+          })}
         </div>
       </section>
     </>

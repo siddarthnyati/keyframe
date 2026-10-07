@@ -15,7 +15,7 @@ export default function Briefs() {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <PageIntro title="Write the brief">
+      <PageIntro title="Brief">
         The brief Dev writes and every agency and vendor works from, beside what is being said about the title this week, so it is written from evidence.
       </PageIntro>
       <div className="flex min-h-0 flex-1 border-t border-line">
@@ -89,6 +89,7 @@ export default function Briefs() {
         </div>
 
         <Panel side="right" width={380}>
+          <div data-story="coverage" className="contents">
           <PanelHeader title="Said this week" right={s ? <span className="text-[11px] text-t3">{s.week}</span> : undefined} />
           {s ? (
             <div className="scroll-thin min-h-0 flex-1 overflow-y-auto">
@@ -123,6 +124,7 @@ export default function Briefs() {
           ) : (
             <p className="p-3 text-[12.5px] leading-5 text-t2">Listening starts six weeks before launch. Nothing gathered yet for {t.name}.</p>
           )}
+          </div>
         </Panel>
       </div>
     </div>

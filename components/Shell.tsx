@@ -4,19 +4,19 @@ import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
 import { personaById, type Persona } from "@/lib/data";
-import Tour from "./Tour";
+import Story from "./Story";
 
 export const NAV: Record<Persona["id"], { href: string; label: string }[]> = {
   production: [
-    { href: "/production", label: "Start Monday" },
-    { href: "/production/launch", label: "Check the launch" },
-    { href: "/production/update", label: "Send the update" },
+    { href: "/production", label: "Today" },
+    { href: "/production/launch", label: "Every file, every market" },
+    { href: "/production/update", label: "Emails, drafted" },
   ],
   campaign: [
-    { href: "/campaign", label: "Start Monday" },
-    { href: "/campaign/requests", label: "Triage requests" },
-    { href: "/campaign/brief", label: "Write the brief" },
-    { href: "/campaign/status", label: "Send the status" },
+    { href: "/campaign", label: "Today" },
+    { href: "/campaign/requests", label: "Requests" },
+    { href: "/campaign/brief", label: "Brief" },
+    { href: "/campaign/status", label: "Status" },
   ],
 };
 
@@ -39,8 +39,9 @@ export default function Shell({ children }: { children: ReactNode }) {
           <>
             <span className="h-4 w-px bg-line-strong" />
             <Link href="/" className="flex items-center gap-2 text-[12.5px] text-t2 hover:text-t1" title="Switch person">
-              <span className="inline-flex size-5 items-center justify-center rounded-full bg-sel text-[10.5px] font-semibold text-t1">{persona.first[0]}</span>
-              You are {persona.first}, {persona.role}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={persona.avatar} alt="" className="size-6 rounded-full bg-white" />
+              {persona.first}, {persona.role}
             </Link>
             <nav className="ml-6 flex items-center gap-0.5">
               {NAV[persona.id].map((n) => {
@@ -70,9 +71,9 @@ export default function Shell({ children }: { children: ReactNode }) {
 
 function TourGate({ persona }: { persona: Persona }) {
   const params = useSearchParams();
-  const step = Number(params.get("tour") ?? 0);
+  const step = Number(params.get("story") ?? 0);
   if (!step) return null;
-  return <Tour persona={persona} step={step} />;
+  return <Story persona={persona} step={step} />;
 }
 
 export function PageIntro({ title, children, right }: { title: string; children: ReactNode; right?: ReactNode }) {
