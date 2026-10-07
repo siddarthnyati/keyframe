@@ -1,28 +1,28 @@
-# Keyframe
+# Launch Desk
 
-A trailer in, a launch art set out, with the spec checks built in.
+The producer's desk for a title launch. One place to see what is ready, what is late, and what to send.
 
-Built as a working sketch for a conversation with Prime Video's Global Marketing Tooling team. It is a small internal tool for the marketer who has to turn one approved trailer into the artwork a title launch needs, in every size and language, without a design queue and without finding out at upload time that something fails spec.
+Built as a working sketch for a conversation with Prime Video's Global Marketing Tooling team. It is the tool a marketing or localization producer would open on Monday morning. Every screen starts with one sentence that says what it is for. All data is seeded, so it reads without clicking anything and without a login.
 
-## The three screens
+## The six screens
 
-1. **Shortlist.** Drop a trailer. The browser samples a frame every 1.5 seconds, scores focus and exposure locally, folds near-duplicates, then sends the top 24 to Claude for a designer's read: faces, mood, theme tags from the service's own variant taxonomy, burned-in text, and one plain sentence on why. The timeline shows where the strong frames live. Star three.
-2. **Variants.** Each starred frame becomes a poster (2:3), cover (16:9), hero (16:9, text-free) and social (1:1) render, per language-locale. Every render carries the spec checks: title legible at the smallest carousel size, tagline inside the safe area, hero text-free, badge colour. Flip the "Title on hero" switch to see a rule fail. Export the set as a ZIP with a manifest.
-3. **Audiences.** Three cohorts, including a new member who arrived through a telecom partner with only coarse, consented signals. The app shows which variant each cohort would see, plays a seeded bandit forward over 14 days, and reports the two numbers a marketer never gets back today: who clicked, and who kept watching.
+1. **Today.** One sentence per launch: "Sintel launches in 8 markets in 9 days. Not ready. 3 things are blocking it." Then the blockers, the new requests since Friday, and the slate.
+2. **Requests.** The intake queue: asset requests, localization, spec rejections, placements, briefs, data pulls, budget. Each one is read once, linked to the launch board, and given a suggested owner and a reason. The producer confirms or changes it.
+3. **Briefs.** The creative brief every vendor works from, beside what fans are saying about the title this week, so the brief is written from evidence. The signals are illustrative; in production they come from the listening feed.
+4. **Launch board.** Markets by deliverables: key art set, trailer, dubbed trailer, subtitles, social cuts, CRM email. Each cell has an owner, a due date and a state. Spec checks run on receipt, so a rejection shows up on the day, not at upload. This is the sheet producers keep by hand today.
+5. **Markets.** A world map of where campaigns are live, launching or blocked. Click a market for what each title still owes there.
+6. **Updates.** The Monday status and the vendor chase email, drafted from the board state, edited and sent by the producer. Nothing sends itself.
 
-## What it deliberately does not do
+## Where the model is used, and where it is not
 
-- No generative art. Only frames from the source footage, so there is nothing to clear with talent or legal.
-- No paid-media optimisation. A different organisation owns that.
-- No auto-approval. Export is a human action.
-- No territory overrides. Variants are keyed to language-locale.
+Used in three places: triage suggestions on requests, spec checks on received files, and drafting the two emails. Each removes a task a producer does by hand.
+
+Not used for generating art, picking frames, choosing variants, optimising spend, approving anything, or sending anything.
 
 ## In this folder
 
-- `docs/walkthrough.mp4` is a 55-second captioned walkthrough of the three screens, recorded from the running app with `node scripts/record.mjs`.
-- `docs/walkthrough-script.md` is a 90-second voiceover to read over it.
-- `docs/PRFAQ.md` is the press release and FAQ in Amazon's Working Backwards format, with every number tagged as observed, reported, assumed or unknown.
-- `docs/01-shortlist.jpg`, `02-variants.jpg`, `02b-export-sheet.jpg`, `03-audiences.jpg` are stills.
+- `docs/PRFAQ.md`, the press release and FAQ in Amazon's Working Backwards format, every number tagged as observed, reported, assumed or unknown.
+- `docs/walkthrough-script.md`, a short voiceover for a screen recording.
 
 ## Run it
 
@@ -32,6 +32,6 @@ echo "ANTHROPIC_API_KEY=sk-ant-..." > .env.local
 npm run dev
 ```
 
-Without a key the Shortlist still runs with placeholder tags, so the rest of the flow can be demonstrated.
+Without a key the Updates screen shows the seeded drafts instead of regenerating them.
 
-Sample footage is the Sintel trailer, Blender Foundation, CC BY 3.0. The service badge, the cohort signals and the performance numbers are illustrative.
+Titles are Blender Foundation open movies (CC BY). Every vendor, person, number and signal is invented for the demo. Nothing here is Amazon data.

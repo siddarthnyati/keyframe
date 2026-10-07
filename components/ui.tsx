@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import type { QCCheck } from "@/lib/types";
+export type QCCheck = { id: string; label: string; status: "pass" | "fail"; detail: string };
 
 export function Button({
   children,
