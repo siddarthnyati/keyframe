@@ -34,10 +34,14 @@ const page = await ctx.newPage();
 t0 = Date.now();
 await page.goto(URL, { waitUntil: "networkidle" });
 mark("One approved trailer in. A launch art set out.");
+await sleep(3500);
+mark("The browser scans the trailer: a frame every 1.5 seconds, scored for focus and exposure, duplicates folded.");
+await page.getByText(/Tagging .* frames/).waitFor({ timeout: 120_000 });
+mark("The top 24 go to the model for a designer\u2019s read: faces, mood, theme tags, burned-in text.");
 
-// Wait for sampling + tagging
+// Wait for tagging
 await page.getByText(/near-duplicates folded/).waitFor({ timeout: 120_000 });
-await sleep(800);
+await sleep(400);
 mark("Every frame scored for focus, exposure and the model's read. The timeline shows where the strong frames live.");
 
 // Skim the timeline
@@ -64,34 +68,33 @@ await pick(2);
 await sleep(600);
 
 // Variants
-await page.getByRole("button", { name: /Render variants/ }).click();
-await page.locator("img[src^='data:']").first().waitFor();
-await sleep(1800);
 mark("Sixteen renders: poster, cover, text-free hero and social, per language-locale.");
-await sleep(1200);
+await page.getByRole("button", { name: /Render variants/ }).click();
+await page.locator('button.bg-player img').first().waitFor({ state: "visible", timeout: 60_000 });
+await sleep(2600);
 // Show a rule failing
-await page.getByRole("switch").first().click();
-await sleep(1600);
 mark("Flip the title onto the hero and the spec check fails before anything is uploaded.");
-await sleep(1600);
+await page.getByRole("switch").first().click();
+await sleep(3000);
 await page.getByRole("switch").first().click();
 await sleep(1200);
 // Approve + export sheet
-await page.getByRole("button", { name: "Approve" }).click();
-await sleep(500);
-await page.getByRole("button", { name: "Export" }).click();
-await sleep(900);
 mark("Approve, then export full delivery sizes with a manifest that carries theme tags and check results.");
-await sleep(2200);
-await page.keyboard.press("Escape");
+await page.getByRole("button", { name: "Approve" }).click();
+await sleep(700);
+await page.getByRole("button", { name: "Export" }).click();
+await sleep(2600);
 await page.mouse.click(400, 500);
-await sleep(600);
+await sleep(500);
 
 // Audiences
-await page.getByRole("button", { name: /See who sees what/ }).click();
-await sleep(1200);
 mark("Three cohorts, including a new member from a telecom partner with only coarse, consented signals.");
-await sleep(2600);
+await page.getByRole("button", { name: /See who sees what/ }).click();
+const mix = page.getByText("How the mix settles");
+await sleep(800);
+if (!(await mix.isVisible().catch(() => false))) await page.getByRole("button", { name: /Audiences/ }).click();
+await mix.waitFor({ state: "visible", timeout: 20_000 });
+await sleep(2200);
 mark("The mix settles per cohort. A slice keeps exploring, and a cap stops one face filling the row.");
 await sleep(2800);
 mark("The loop closes with the two numbers a producer never gets today: who clicked, and who kept watching.");
@@ -116,7 +119,11 @@ const filters = marks.map((m, i) => {
 });
 const vf = filters.join(",");
 const mp4 = path.join(out, "walkthrough.mp4");
-execFileSync(ffmpeg, ["-y", "-i", rawOut, "-vf", vf, "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-movflags", "+faststart", mp4], { stdio: "inherit" });
+// Drop the static wait while the model tags frames.
+const tagStart = marks.find((m) => m.text.startsWith("The top 24"))?.t ?? 0;
+const tagEnd = marks.find((m) => m.text.startsWith("Every frame scored"))?.t ?? 0;
+const cut = tagEnd - tagStart > 4 ? `,select='not(between(t,${(tagStart + 2.5).toFixed(2)},${(tagEnd - 0.5).toFixed(2)}))',setpts=N/FRAME_RATE/TB` : "";
+execFileSync(ffmpeg, ["-y", "-i", rawOut, "-vf", vf + cut, "-an", "-c:v", "libx264", "-pix_fmt", "yuv420p", "-crf", "20", "-movflags", "+faststart", mp4], { stdio: "inherit" });
 rmSync(tmp, { recursive: true, force: true });
 console.log("Captions:", marks);
 console.log("Wrote", mp4);

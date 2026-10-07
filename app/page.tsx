@@ -47,6 +47,7 @@ export default function Page() {
     });
     setFrames(sampled);
     const candidates = sampled.filter((f) => !f.dupOf).sort((a, b) => b.score - a.score).slice(0, 24);
+    if (candidates[0]) v.currentTime = candidates[0].t;
     setStatus({ phase: "tagging", done: 0, total: candidates.length });
     try {
       const res = await fetch("/api/analyze", {
@@ -68,8 +69,6 @@ export default function Page() {
     } catch {
       setStatus({ phase: "ready", done: 0, total: 0, mock: true, note: "tagging failed" });
     }
-    const top = sampled.filter((f) => !f.dupOf).sort((a, b) => b.score - a.score)[0];
-    if (v && top) v.currentTime = top.t;
   }, []);
 
   useEffect(() => {

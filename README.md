@@ -17,6 +17,13 @@ Built as a working sketch for a conversation with Prime Video's Global Marketing
 - No auto-approval. Export is a human action.
 - No territory overrides. Variants are keyed to language-locale.
 
+## In this folder
+
+- `docs/walkthrough.mp4` is a 55-second captioned walkthrough of the three screens, recorded from the running app with `node scripts/record.mjs`.
+- `docs/walkthrough-script.md` is a 90-second voiceover to read over it.
+- `docs/PRFAQ.md` is the press release and FAQ in Amazon's Working Backwards format, with every number tagged as observed, reported, assumed or unknown.
+- `docs/01-shortlist.jpg`, `02-variants.jpg`, `02b-export-sheet.jpg`, `03-audiences.jpg` are stills.
+
 ## Run it
 
 ```bash
