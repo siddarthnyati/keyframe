@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Suspense, type ReactNode } from "react";
+import { X } from "lucide-react";
 import { personaById, type Persona } from "@/lib/data";
 import Story from "./Story";
 
@@ -71,9 +72,32 @@ export default function Shell({ children }: { children: ReactNode }) {
 
 function TourGate({ persona }: { persona: Persona }) {
   const params = useSearchParams();
+  const path = usePathname();
   const step = Number(params.get("story") ?? 0);
-  if (!step) return null;
-  return <Story persona={persona} step={step} />;
+  if (step) return <Story persona={persona} step={step} />;
+  if (params.get("done")) {
+    const other = personaById[persona.id === "campaign" ? "production" : "campaign"];
+    return (
+      <div className="fixed right-5 top-16 z-50 flex w-[360px] items-start gap-3 rounded-[16px] bg-white p-4 text-[#111] shadow-[0_12px_32px_rgba(0,0,0,0.55)]">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img src={persona.avatar} alt="" className="size-12 shrink-0 rounded-full bg-[#f2f2f2]" />
+        <div className="min-w-0 flex-1">
+          <p className="text-[14px] font-semibold leading-5">{persona.first}&rsquo;s morning is done.</p>
+          <p className="mt-0.5 text-[12.5px] leading-4 text-[#555]">Explore the desk. Everything is clickable.</p>
+          <Link href={`/${other.id}?story=1`} className="mt-2 inline-flex h-8 items-center gap-1.5 rounded-full bg-prime px-3 text-[12.5px] font-semibold text-white hover:brightness-110">
+            See {other.first}&rsquo;s morning
+          </Link>
+          <p className="mt-1 text-[11.5px] text-[#777]">
+            {other.first} is the {other.role.toLowerCase()}.
+          </p>
+        </div>
+        <Link href={path} className="inline-flex size-8 shrink-0 items-center justify-center rounded-full text-[#777] hover:bg-[#f2f2f2] hover:text-[#111]" aria-label="Close">
+          <X size={16} />
+        </Link>
+      </div>
+    );
+  }
+  return null;
 }
 
 export function PageIntro({ title, children, right }: { title: string; children: ReactNode; right?: ReactNode }) {

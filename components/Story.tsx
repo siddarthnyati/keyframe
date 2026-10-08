@@ -14,7 +14,7 @@ export const STORIES: Record<Persona["id"], StoryStep[]> = {
     { href: "/campaign/requests", target: "row-REQ-2418", bubble: "Japan key art bounced, no 2:3 poster. It already linked the ticket to the board and named Halftone.", lesson: "A request is read once and routed, not re-typed into a tracker." },
     { href: "/campaign/requests", target: "confirm", bubble: "Right owner, right reason. Confirm and route.", lesson: "The tool suggests. Dev decides." },
     { href: "/campaign/brief", target: "coverage", bubble: "Fans are rewatching season 1 before launch. That goes in the CRM as a catch-up call to action.", lesson: "The brief sits next to the evidence, with sources." },
-    { href: "/campaign", target: "globe", bubble: "Where are we live? Carrie in the US and UK. Terminal List booked everywhere except the three red ones.", lesson: "The regional lead's question, answered without a slide." },
+    { href: "/campaign", target: "globe", bubble: "Drag the globe. Green is live, blue is booked, red is waiting on Priya's three.", lesson: "The regional lead's question, answered without a slide." },
     { href: "/campaign/status", target: "send", bubble: "Status to my lead, drafted from the board, the queue and the brief. I read it once and send.", lesson: "Nothing sends itself." },
   ],
   production: [
@@ -35,8 +35,8 @@ export default function Story({ persona, step }: { persona: Persona; step: numbe
   const [rect, setRect] = useState<DOMRect | null>(null);
   const prevHref = i > 1 ? join(steps[i - 2].href, i - 1) : null;
   const last = i === steps.length;
-  const other = persona.id === "campaign" ? "production" : "campaign";
-  const nextHref = last ? `/${other}?story=1` : join(steps[i].href, i + 1);
+  const home = `/${persona.id}`;
+  const nextHref = last ? `${home}?done=1` : join(steps[i].href, i + 1);
   const exitHref = s.href.split("?")[0];
 
   useEffect(() => {
@@ -110,11 +110,13 @@ export default function Story({ persona, step }: { persona: Persona; step: numbe
         </div>
       </div>
 
+      {/* Exit, always visible, top right */}
+      <Link href={exitHref} className="fixed right-5 top-16 z-50 inline-flex h-11 items-center gap-2 rounded-full bg-white px-4 text-[13.5px] font-semibold text-[#111] shadow-[0_8px_24px_rgba(0,0,0,0.5)] hover:bg-[#f2f2f2]" aria-label="Exit the preview">
+        <X size={16} /> Exit preview
+      </Link>
+
       {/* Controls: one big Next, with the hand on it */}
       <div className="fixed bottom-6 right-6 z-40 flex items-center gap-3">
-        <Link href={exitHref} className="inline-flex size-10 items-center justify-center rounded-full bg-panel text-t3 ring-1 ring-line-strong hover:text-t1" aria-label="Exit story">
-          <X size={16} />
-        </Link>
         {prevHref ? (
           <Link href={prevHref} className="inline-flex size-12 items-center justify-center rounded-full bg-panel text-t2 ring-1 ring-line-strong hover:text-t1" aria-label="Back">
             <ChevronLeft size={20} />
@@ -126,7 +128,7 @@ export default function Story({ persona, step }: { persona: Persona; step: numbe
         )}
         <div className="relative">
           <Link href={nextHref} className="inline-flex h-14 items-center gap-2 rounded-full bg-prime px-7 text-[17px] font-semibold text-white shadow-[0_12px_32px_rgba(26,152,255,0.45)] hover:brightness-110 active:scale-[0.98]">
-            {last ? `Meet ${other === "campaign" ? "Dev" : "Priya"}` : "Next"} <ChevronRight size={20} />
+            {last ? "Finish" : "Next"} <ChevronRight size={20} />
           </Link>
           <div className="pointer-events-none absolute -bottom-7 left-1/2 hand">
             <Hand />

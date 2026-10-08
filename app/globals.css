@@ -148,6 +148,18 @@ input[type="checkbox"] {
   }
 }
 
+.spin-hint {
+  animation: spin-hint 2.4s linear infinite;
+}
+@keyframes spin-hint {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
+
 .sheet-in {
   animation: sheet 180ms ease-out both;
 }
@@ -176,6 +188,18 @@ input[type="checkbox"] {
   }
   50% {
     transform: translate(-50%, -10px) rotate(-12deg);
+  }
+}
+
+.spin-hint {
+  animation: spin-hint 2.4s linear infinite;
+}
+@keyframes spin-hint {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
   }
 }
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import { RotateCcw } from "lucide-react";
 import { geoOrthographic, geoPath, geoGraticule10 } from "d3-geo";
 import { feature } from "topojson-client";
 import world from "world-atlas/countries-110m.json";
@@ -26,6 +27,7 @@ export default function Globe({ tones, selected, onSelect }: { tones: Record<str
   const [rot, setRot] = useState<[number, number]>([-20, -20]);
   const drag = useRef<{ x: number; y: number; r: [number, number] } | null>(null);
   const spinning = useRef(true);
+  const [touched, setTouched] = useState(false);
 
   useEffect(() => {
     let raf = 0;
@@ -62,12 +64,19 @@ export default function Globe({ tones, selected, onSelect }: { tones: Record<str
   };
 
   return (
+    <div className="relative w-full max-w-[520px]">
+      {!touched && (
+        <div className="pointer-events-none absolute bottom-4 left-1/2 z-10 flex -translate-x-1/2 items-center gap-2 rounded-full bg-white px-3.5 py-1.5 text-[12.5px] font-semibold text-[#111] shadow-[0_8px_20px_rgba(0,0,0,0.45)]">
+          <RotateCcw size={14} className="spin-hint" /> Drag to spin the globe
+        </div>
+      )}
     <svg
       viewBox={`0 0 ${SIZE} ${SIZE}`}
-      className="h-auto w-full max-w-[520px] cursor-grab select-none active:cursor-grabbing"
+      className="h-auto w-full cursor-grab select-none active:cursor-grabbing"
       role="img"
       aria-label="Globe of markets"
       onPointerDown={(e) => {
+        setTouched(true);
         drag.current = { x: e.clientX, y: e.clientY, r: rot };
         (e.target as Element).setPointerCapture?.(e.pointerId);
       }}
@@ -113,5 +122,6 @@ export default function Globe({ tones, selected, onSelect }: { tones: Record<str
         );
       })}
     </svg>
+    </div>
   );
 }
