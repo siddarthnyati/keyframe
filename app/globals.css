@@ -141,10 +141,10 @@ input[type="checkbox"] {
 @keyframes hand {
   0%,
   100% {
-    transform: translate(0, 0) rotate(-8deg);
+    transform: translate(-50%, 0) rotate(-12deg);
   }
   50% {
-    transform: translate(-6px, -8px) rotate(-8deg);
+    transform: translate(-50%, -10px) rotate(-12deg);
   }
 }
 
@@ -172,10 +172,10 @@ input[type="checkbox"] {
 @keyframes hand {
   0%,
   100% {
-    transform: translate(0, 0) rotate(-8deg);
+    transform: translate(-50%, 0) rotate(-12deg);
   }
   50% {
-    transform: translate(-6px, -8px) rotate(-8deg);
+    transform: translate(-50%, -10px) rotate(-12deg);
   }
 }
 

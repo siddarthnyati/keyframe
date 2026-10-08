@@ -82,7 +82,7 @@ export function Updates({ mode = "production" }: { mode?: "production" | "campai
             <Button onClick={regenerate} disabled={busy}>
               <Sparkle size={13} /> {busy ? "Drafting" : "Draft again from the board"}
             </Button>
-            <span data-story="send">
+            <span data-story="send" className="inline-flex">
             <Button primary onClick={() => setSent(true)} disabled={sent}>
               {sent ? "Marked as sent" : kind === "chase" ? "Send to vendor" : "Send to the marketing lead"}
             </Button>

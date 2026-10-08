@@ -103,12 +103,12 @@ function Detail({ t }: { t: Ticket }) {
         <p className="mt-2 text-[12.5px] leading-5 text-t1">{t.suggested.why}</p>
       </Section>
       <div className="flex gap-2 p-3">
+        <span data-story="confirm" className="flex flex-1">
         <Button primary full onClick={() => setDone(true)} disabled={done || t.status === "Done"}>
           {done || t.status === "Done" ? "Confirmed" : "Confirm and route"}
         </Button>
-        <Button full onClick={() => setDone(false)}>
-          Change
-        </Button>
+        </span>
+        <Button onClick={() => setDone(false)}>Change</Button>
       </div>
     </div>
   );

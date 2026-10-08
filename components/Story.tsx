@@ -6,24 +6,26 @@ import { useEffect, useLayoutEffect, useState } from "react";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import type { Persona } from "@/lib/data";
 
-export type StoryStep = { href: string; target: string; bubble: string; lesson: string; before: string };
+export type StoryStep = { href: string; target: string; bubble: string; lesson: string };
 
 export const STORIES: Record<Persona["id"], StoryStep[]> = {
-  production: [
-    { href: "/production", target: "todo", bubble: "Three things in my way and the 10am update. That is my Monday.", lesson: "Start with what needs her, not with a dashboard.", before: "Before: four trackers and a vendor thread." },
-    { href: "/production", target: "todo-0", bubble: "Nordlicht slipped the German dub again. I want that date in writing.", lesson: "The late file names its owner and what to do next.", before: "Before: a cell that said 'in progress'." },
-    { href: "/production/update?kind=chase", target: "send", bubble: "Already written from the board. Launch date, fallback, spec. I tweak one line and send.", lesson: "Drafted, never sent for her.", before: "Before: twenty minutes from memory." },
-    { href: "/production/launch?title=terminal&cell=JP:keyart", target: "cell-JP:keyart", bubble: "Japan bounced. No 2:3 poster. Halftone has the files, so it is a size, not new art.", lesson: "The spec check ran the day the file arrived.", before: "Before: the rejection email a week later, after the vendor billed." },
-    { href: "/production/update?kind=status", target: "send", bubble: "10am. The status reads off the same board. I read it once and send.", lesson: "One board, every email.", before: "Before: an hour every Monday turning the tracker into prose." },
-  ],
   campaign: [
-    { href: "/campaign", target: "todo", bubble: "Nine placements booked, three waiting on production. Two tickets since Friday.", lesson: "Start with the campaign, not the tool.", before: "Before: the ticket tool, the tracker, and a Slack search." },
-    { href: "/campaign", target: "globe", bubble: "Where are we live this week? Carrie in the US and UK. Terminal List booked everywhere except the three red ones.", lesson: "Show it, don't list it.", before: "Before: someone builds a slide for the regional lead." },
-    { href: "/campaign/requests", target: "row-REQ-2418", bubble: "Japan bounced. It already knows who should fix it and why. I confirm.", lesson: "A request is read once and routed, not re-typed.", before: "Before: copy the ticket into the tracker, guess the owner." },
-    { href: "/campaign/brief", target: "coverage", bubble: "Fans are rewatching season 1 before launch. That goes in the CRM as a catch-up CTA.", lesson: "The brief sits next to the evidence.", before: "Before: the listening report in a different tool." },
-    { href: "/campaign/status", target: "send", bubble: "Status to my lead, drafted from the board, the queue and the brief. Send.", lesson: "Nothing sends itself.", before: "Before: Monday afternoon, gone." },
+    { href: "/campaign", target: "todo-0", bubble: "Two tickets landed since Friday. Queue first, then the rest.", lesson: "The day starts with what needs him, not a dashboard." },
+    { href: "/campaign/requests", target: "row-REQ-2418", bubble: "Japan key art bounced, no 2:3 poster. It already linked the ticket to the board and named Halftone.", lesson: "A request is read once and routed, not re-typed into a tracker." },
+    { href: "/campaign/requests", target: "confirm", bubble: "Right owner, right reason. Confirm and route.", lesson: "The tool suggests. Dev decides." },
+    { href: "/campaign/brief", target: "coverage", bubble: "Fans are rewatching season 1 before launch. That goes in the CRM as a catch-up call to action.", lesson: "The brief sits next to the evidence, with sources." },
+    { href: "/campaign", target: "globe", bubble: "Where are we live? Carrie in the US and UK. Terminal List booked everywhere except the three red ones.", lesson: "The regional lead's question, answered without a slide." },
+    { href: "/campaign/status", target: "send", bubble: "Status to my lead, drafted from the board, the queue and the brief. I read it once and send.", lesson: "Nothing sends itself." },
+  ],
+  production: [
+    { href: "/production", target: "todo-0", bubble: "Nordlicht slipped the German dub. I want that date in writing before anything else.", lesson: "The late file names its owner and the next move." },
+    { href: "/production/update?kind=chase", target: "send", bubble: "Already written from the board: launch date, fallback, spec. One tweak and send.", lesson: "Drafted, never sent for her." },
+    { href: "/production/launch?title=terminal&cell=JP:keyart", target: "cell-JP:keyart", bubble: "Japan bounced on arrival: no 2:3 poster. Halftone has the files, so it is one size, not new art.", lesson: "The spec check ran the day the file arrived, not at upload." },
+    { href: "/production/update?kind=status", target: "send", bubble: "10am. The status reads off the same board. Read once, send.", lesson: "One board, every email." },
   ],
 };
+
+const join = (href: string, n: number) => `${href}${href.includes("?") ? "&" : "?"}story=${n}`;
 
 export default function Story({ persona, step }: { persona: Persona; step: number }) {
   const steps = STORIES[persona.id];
@@ -31,104 +33,119 @@ export default function Story({ persona, step }: { persona: Persona; step: numbe
   const s = steps[i - 1];
   const router = useRouter();
   const [rect, setRect] = useState<DOMRect | null>(null);
-  const join = (href: string, n: number) => `${href}${href.includes("?") ? "&" : "?"}story=${n}`;
   const prevHref = i > 1 ? join(steps[i - 2].href, i - 1) : null;
-  const nextHref = i < steps.length ? join(steps[i].href, i + 1) : "/";
+  const last = i === steps.length;
+  const other = persona.id === "campaign" ? "production" : "campaign";
+  const nextHref = last ? `/${other}?story=1` : join(steps[i].href, i + 1);
+  const exitHref = s.href.split("?")[0];
 
+  useEffect(() => {
+    router.prefetch(nextHref);
+  }, [router, nextHref]);
+
+  // Find the target, keep its box fresh, and make clicking it advance the story.
   useLayoutEffect(() => {
     let tries = 0;
     let raf = 0;
+    let el: HTMLElement | null = null;
+    const onClick = (e: Event) => {
+      e.preventDefault();
+      e.stopPropagation();
+      router.push(nextHref);
+    };
     const find = () => {
-      const el = document.querySelector<HTMLElement>(`[data-story="${s.target}"]`);
+      el = document.querySelector<HTMLElement>(`[data-story="${s.target}"]`);
       if (el) {
-        el.scrollIntoView({ block: "center", behavior: "smooth" });
+        el.scrollIntoView({ block: "center" });
         setRect(el.getBoundingClientRect());
-      } else if (tries++ < 40) raf = requestAnimationFrame(find);
+        el.addEventListener("click", onClick, true);
+      } else if (tries++ < 60) raf = requestAnimationFrame(find);
     };
     find();
-    const onResize = () => {
-      const el = document.querySelector<HTMLElement>(`[data-story="${s.target}"]`);
+    const refresh = () => {
       if (el) setRect(el.getBoundingClientRect());
     };
-    window.addEventListener("resize", onResize);
-    window.addEventListener("scroll", onResize, true);
-    const t = setInterval(onResize, 400);
+    window.addEventListener("resize", refresh);
+    window.addEventListener("scroll", refresh, true);
+    const t = setInterval(refresh, 250);
     return () => {
       cancelAnimationFrame(raf);
       clearInterval(t);
-      window.removeEventListener("resize", onResize);
-      window.removeEventListener("scroll", onResize, true);
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("scroll", refresh, true);
+      el?.removeEventListener("click", onClick, true);
     };
-  }, [s.target, s.href]);
+  }, [s.target, s.href, nextHref, router]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowRight") router.push(nextHref);
+      if (e.key === "ArrowRight" || e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        router.push(nextHref);
+      }
       if (e.key === "ArrowLeft" && prevHref) router.push(prevHref);
-      if (e.key === "Escape") router.push(s.href.split("?")[0]);
+      if (e.key === "Escape") router.push(exitHref);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [router, nextHref, prevHref, s.href]);
+  }, [router, nextHref, prevHref, exitHref]);
 
   return (
     <>
-      {/* Spotlight */}
       {rect && (
         <div
-          className="pointer-events-none fixed z-30 rounded-[10px] ring-2 ring-prime transition-all duration-300"
-          style={{ left: rect.left - 6, top: rect.top - 6, width: rect.width + 12, height: rect.height + 12, boxShadow: "0 0 0 9999px rgba(8,10,14,0.55)" }}
+          className="pointer-events-none fixed z-30 rounded-[12px] ring-[3px] ring-prime transition-all duration-200"
+          style={{ left: rect.left - 6, top: rect.top - 6, width: rect.width + 12, height: rect.height + 12, boxShadow: "0 0 0 9999px rgba(8,10,14,0.6)" }}
         />
       )}
-      {/* Pointing hand */}
-      {rect && (
-        <div className="pointer-events-none fixed z-40 hand" style={{ left: Math.min(rect.left + Math.min(rect.width * 0.5, 180), window.innerWidth - 60), top: rect.top + Math.min(rect.height, 56) - 8 }}>
-          <Hand />
-        </div>
-      )}
-      {/* Bubble + avatar */}
-      <div className="pointer-events-none fixed bottom-16 left-6 z-40 flex max-w-[520px] items-end gap-3">
+
+      {/* Avatar + bubble */}
+      <div className="pointer-events-none fixed bottom-24 left-6 z-40 flex max-w-[560px] items-end gap-3">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={persona.avatar} alt="" className="size-[88px] shrink-0 rounded-full bg-white shadow-[0_8px_24px_rgba(0,0,0,0.5)]" />
-        <div className="pointer-events-auto relative rounded-[14px] bg-white px-4 py-3 text-[14px] leading-5 text-[#111] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
-          <span className="absolute -left-2 bottom-5 size-4 rotate-45 bg-white" />
-          <p className="font-medium">{s.bubble}</p>
-          <p className="mt-1.5 text-[12px] leading-4 text-[#444]">{s.lesson}</p>
-          <p className="mt-0.5 text-[11.5px] leading-4 text-[#888]">{s.before}</p>
+        <img src={persona.avatar} alt="" className="size-[96px] shrink-0 rounded-full bg-white shadow-[0_8px_24px_rgba(0,0,0,0.5)]" />
+        <div className="relative rounded-[16px] bg-white px-5 py-3.5 text-[#111] shadow-[0_8px_24px_rgba(0,0,0,0.5)]">
+          <span className="absolute -left-2 bottom-6 size-4 rotate-45 bg-white" />
+          <p className="text-[15px] font-medium leading-6">{s.bubble}</p>
+          <p className="mt-1 text-[12.5px] leading-4 text-[#666]">{s.lesson}</p>
         </div>
       </div>
-      {/* Progress + controls */}
-      <div className="fixed inset-x-0 bottom-0 z-40 h-1 bg-black/40">
-        <div className="h-full bg-prime transition-all duration-300" style={{ width: `${(i / steps.length) * 100}%` }} />
-      </div>
-      <div className="fixed bottom-4 right-5 z-40 flex items-center gap-1 rounded-full bg-panel/95 p-1 shadow-[0_8px_24px_rgba(0,0,0,0.5)] ring-1 ring-line-strong">
-        <span className="mono px-2 text-[11px] text-t2">
-          {i} / {steps.length}
-        </span>
+
+      {/* Controls: one big Next, with the hand on it */}
+      <div className="fixed bottom-6 right-6 z-40 flex items-center gap-3">
+        <Link href={exitHref} className="inline-flex size-10 items-center justify-center rounded-full bg-panel text-t3 ring-1 ring-line-strong hover:text-t1" aria-label="Exit story">
+          <X size={16} />
+        </Link>
         {prevHref ? (
-          <Link href={prevHref} className="inline-flex size-8 items-center justify-center rounded-full text-t2 hover:bg-hover hover:text-t1" aria-label="Back">
-            <ChevronLeft size={16} />
+          <Link href={prevHref} className="inline-flex size-12 items-center justify-center rounded-full bg-panel text-t2 ring-1 ring-line-strong hover:text-t1" aria-label="Back">
+            <ChevronLeft size={20} />
           </Link>
         ) : (
-          <span className="inline-flex size-8 items-center justify-center text-t3">
-            <ChevronLeft size={16} />
+          <span className="inline-flex size-12 items-center justify-center rounded-full bg-panel text-t3 ring-1 ring-line-strong">
+            <ChevronLeft size={20} />
           </span>
         )}
-        <Link href={nextHref} className="inline-flex h-8 items-center gap-1 rounded-full bg-prime px-3 text-[12.5px] font-medium text-white hover:brightness-110" aria-label="Next">
-          {i < steps.length ? "Next" : "Done"} <ChevronRight size={14} />
-        </Link>
-        <Link href={s.href.split("?")[0]} className="inline-flex size-8 items-center justify-center rounded-full text-t3 hover:bg-hover hover:text-t1" aria-label="Exit story">
-          <X size={14} />
-        </Link>
+        <div className="relative">
+          <Link href={nextHref} className="inline-flex h-14 items-center gap-2 rounded-full bg-prime px-7 text-[17px] font-semibold text-white shadow-[0_12px_32px_rgba(26,152,255,0.45)] hover:brightness-110 active:scale-[0.98]">
+            {last ? `Meet ${other === "campaign" ? "Dev" : "Priya"}` : "Next"} <ChevronRight size={20} />
+          </Link>
+          <div className="pointer-events-none absolute -bottom-7 left-1/2 hand">
+            <Hand />
+          </div>
+          <span className="mono absolute -top-5 right-1 text-[11px] text-t3">
+            {i} / {steps.length}
+          </span>
+        </div>
       </div>
-      <p className="pointer-events-none fixed bottom-5 left-1/2 z-40 -translate-x-1/2 text-[11px] text-t3">Use the arrow keys</p>
+      <div className="fixed inset-x-0 bottom-0 z-40 h-1.5 bg-black/40">
+        <div className="h-full bg-prime transition-all duration-300" style={{ width: `${(i / steps.length) * 100}%` }} />
+      </div>
     </>
   );
 }
 
 function Hand() {
   return (
-    <svg width="44" height="52" viewBox="0 0 44 52" fill="none" aria-hidden>
+    <svg width="40" height="48" viewBox="0 0 44 52" fill="none" aria-hidden>
       <path d="M16 46 L16 20 a4 4 0 0 1 8 0 L24 30 L24 10 a4 4 0 0 1 8 0 L32 30 L32 14 a4 4 0 0 1 8 0 L40 36 c0 8 -6 14 -14 14 h-4 c-6 0 -10 -3 -13 -8 L4 30 a4 4 0 0 1 7 -4 L16 32 Z" fill="#FFD9B8" stroke="#1a1a1a" strokeWidth="2.5" strokeLinejoin="round" />
     </svg>
   );

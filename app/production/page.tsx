@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { ArrowRight, Play } from "lucide-react";
 import Bubble from "@/components/Bubble";
+import Carousel from "@/components/Carousel";
 import Poster from "@/components/Poster";
 import { Ring, StatusPill } from "@/components/status";
 import { CELLS, DELIVERABLES, daysToLaunch, fmtDate, marketByCode, personaById, readiness, titleById, type Title } from "@/lib/data";
@@ -53,13 +54,13 @@ export default function PriyaMonday() {
           <h2 className="text-[11px] font-medium uppercase tracking-[0.1em] text-t3">To do today</h2>
           <ol className="mt-3 space-y-3">
             {p.todo.map((t, i) => (
-              <li key={t.text} data-story={`todo-${i}`} className="flex items-center gap-4 rounded-[12px] border border-line bg-panel p-4">
+              <li key={t.text} className="flex items-center gap-4 rounded-[12px] border border-line bg-panel p-4">
                 <span className={`inline-flex size-9 shrink-0 items-center justify-center rounded-full text-[14px] font-semibold text-app ${TONE[t.tone]}`}>{i + 1}</span>
                 <span className="min-w-0 flex-1">
                   <span className="block text-[14px] font-medium">{t.text}</span>
                   <span className="block text-[12.5px] leading-4 text-t2">{t.why}</span>
                 </span>
-                <Link href={t.href} className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-t1 px-3.5 text-[12.5px] font-medium text-app hover:bg-white">
+                <Link href={t.href} data-story={`todo-${i}`} className="inline-flex h-9 shrink-0 items-center gap-1.5 rounded-full bg-t1 px-3.5 text-[12.5px] font-medium text-app hover:bg-white">
                   {t.cta} <ArrowRight size={13} />
                 </Link>
               </li>
@@ -90,6 +91,7 @@ export default function PriyaMonday() {
           </div>
         </div>
       </section>
+      <Carousel only={MINE} />
     </>
   );
 }

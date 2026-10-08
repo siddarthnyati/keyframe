@@ -409,22 +409,6 @@ export type Persona = {
 const AVATAR = (seed: string, bg: string) => `https://api.dicebear.com/9.x/notionists/svg?seed=${seed}&backgroundColor=${bg}&radius=50`;
 export const PERSONAS: Persona[] = [
   {
-    id: "production",
-    name: "Priya Natarajan",
-    first: "Priya",
-    role: "Marketing Production Manager",
-    org: "Prime Video International Originals",
-    city: "London",
-    avatar: AVATAR("Priya-Natarajan", "ffd5dc"),
-    thought: "Fourteen days. Three things in my way. Let me clear them before the 10am.",
-    todo: [
-      { text: "Chase Nordlicht for the German dub of the trailer", why: "Late since Oct 5. Verbal ETA Oct 9. I need it in writing.", href: "/production/update?kind=chase", cta: "Send the chase, drafted", tone: "warn" },
-      { text: "Get the 2:3 poster added to the Japan key art set", why: "Rejected at upload Oct 6. Halftone has the files; it is one missing size.", href: "/production/launch?title=terminal&cell=JP:keyart", cta: "Open the file", tone: "err" },
-      { text: "Approve the revised Brazil 9:16 cut when it lands", why: "Tagline ran past the safe area. Agency has the note, due Oct 16.", href: "/production/launch?title=terminal&cell=BR:social", cta: "Open the file", tone: "accent" },
-      { text: "Send the 10am production status", why: "Drafted from the board. Read once, send.", href: "/production/update?kind=status", cta: "Read and send", tone: "ok" },
-    ],
-  },
-  {
     id: "campaign",
     name: "Dev Okafor",
     first: "Dev",
@@ -438,6 +422,22 @@ export const PERSONAS: Persona[] = [
       { text: "Fold this week's coverage into the brief", why: "Fans are rewatching season 1 and Dark Wolf. That is a catch-up CTA.", href: "/campaign/brief", cta: "Open the brief", tone: "accent" },
       { text: "Check the three placements waiting on production", why: "Germany, Brazil, Japan. Same three blockers on Priya's desk.", href: "/campaign#globe", cta: "See the globe", tone: "warn" },
       { text: "Send Monday status to the marketing lead", why: "Drafted from the board, the queue and the brief.", href: "/campaign/status", cta: "Read and send", tone: "ok" },
+    ],
+  },
+  {
+    id: "production",
+    name: "Priya Natarajan",
+    first: "Priya",
+    role: "Marketing Production Manager",
+    org: "Prime Video International Originals",
+    city: "London",
+    avatar: AVATAR("Priya-Natarajan", "ffd5dc"),
+    thought: "Fourteen days. Three things in my way. Let me clear them before the 10am.",
+    todo: [
+      { text: "Chase Nordlicht for the German dub of the trailer", why: "Late since Oct 5. Verbal ETA Oct 9. I need it in writing.", href: "/production/update?kind=chase", cta: "Send the chase, drafted", tone: "warn" },
+      { text: "Get the 2:3 poster added to the Japan key art set", why: "Rejected at upload Oct 6. Halftone has the files; it is one missing size.", href: "/production/launch?title=terminal&cell=JP:keyart", cta: "Open the file", tone: "err" },
+      { text: "Approve the revised Brazil 9:16 cut when it lands", why: "Tagline ran past the safe area. Agency has the note, due Oct 16.", href: "/production/launch?title=terminal&cell=BR:social", cta: "Open the file", tone: "accent" },
+      { text: "Send the 10am production status", why: "Drafted from the board. Read once, send.", href: "/production/update?kind=status", cta: "Read and send", tone: "ok" },
     ],
   },
 ];
